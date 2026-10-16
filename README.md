@@ -8,6 +8,7 @@ Direct, transparent deal-making platform connecting modern consumer brands with 
 
 ## 🌟 Key Highlights
 
+- **🎨 WorksBuddy-Inspired Editorial SaaS Design:** Featuring floating glassmorphic navigation, animated rotating hero badges, layered stacked dashboard mockups, continuous marquee testimonials, tool-sprawl friction chips, and instant Light/Dark mode toggling.
 - **🎟️ Signature Ticket-Stub Deal Cards:** Visual ticket cards featuring perforated dashed separators, notch cutouts, budget brackets (in INR `₹`), deliverables scope, and real-time days-left counters.
 - **🔄 Dual Persona Architecture:**
   - **🏢 Brand Portal:** Discover creators filtered by niche (Fashion, Tech, Beauty, Fitness, etc.), verified follower tiers, and engagement rates. Create campaign briefs and review candidate applicant rosters with 1-click **Shortlist**, **Hire**, or **Decline** workflows.

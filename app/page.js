@@ -2,36 +2,51 @@
 
 import { useState, useMemo, useEffect } from "react";
 import {
-  Sparkles,
   Briefcase,
   Users2,
   Search,
-  SlidersHorizontal,
   Plus,
   Send,
   Star,
   CheckCircle2,
   XCircle,
-  Clock,
-  ArrowRight,
-  Filter,
-  TrendingUp,
   ShieldCheck,
-  Zap,
 } from "lucide-react";
-import { Instagram, Youtube } from "@/components/Icons";
 import Avatar from "@/components/Avatar";
 import StatusBadge from "@/components/StatusBadge";
 import DealCard, { formatMoney } from "@/components/DealCard";
-import CreatorCard, { formatFollowers } from "@/components/CreatorCard";
-import MetricsOverview from "@/components/MetricsOverview";
+import CreatorCard from "@/components/CreatorCard";
 import Modal from "@/components/Modal";
 import Toast from "@/components/Toast";
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
+import ToolSprawl from "@/components/ToolSprawl";
+import FeatureStage from "@/components/FeatureStage";
+import WorkflowSection from "@/components/WorkflowSection";
+import TestimonialMarquee from "@/components/TestimonialMarquee";
+import { Instagram, Youtube } from "@/components/Icons";
 import { NICHES, CREATORS, INITIAL_OFFERS, INITIAL_APPLICATIONS } from "@/lib/seedData";
 
 const CURRENT_CREATOR_ID = "inf-1"; // Aanya Kapoor
 
 export default function Home() {
+  // Theme State
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("roster_theme") || "light";
+    setTheme(saved);
+    document.documentElement.setAttribute("data-theme", saved);
+  }, []);
+
+  const toggleTheme = () => {
+    const next = theme === "light" ? "dark" : "light";
+    setTheme(next);
+    localStorage.setItem("roster_theme", next);
+    document.documentElement.setAttribute("data-theme", next);
+  };
+
+  // Live Deal Platform Persona State
   const [role, setRole] = useState("brand"); // "brand" | "creator"
   const [brandTab, setBrandTab] = useState("find"); // "find" | "campaigns"
   const [creatorTab, setCreatorTab] = useState("browse"); // "browse" | "applications" | "profile"
@@ -197,17 +212,12 @@ export default function Home() {
     setApplications((prev) =>
       prev.map((a) => (a.id === appId ? { ...a, status: newStatus } : a))
     );
-    showToast(`Applicant status marked as "${newStatus}"! ✨`);
+    showToast(`Applicant status updated to "${newStatus}"! ✨`);
   };
 
-  // Total deal volume estimate
-  const totalDealValue = useMemo(() => {
-    return offers.reduce((acc, curr) => acc + (curr.budgetMin + curr.budgetMax) / 2, 0);
-  }, [offers]);
-
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "var(--paper)" }}>
-      {/* Toast Notification Container */}
+    <div>
+      {/* Toast Feedback */}
       {toast && (
         <Toast
           message={toast.message}
@@ -216,1139 +226,1181 @@ export default function Home() {
         />
       )}
 
-      {/* Global Navigation Header */}
-      <header
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 40,
-          backgroundColor: "rgba(245, 243, 236, 0.94)",
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
-          borderBottom: "1px solid var(--line)",
-          padding: "14px 28px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "16px",
+      {/* WorksBuddy Floating Navigation Bar */}
+      <Navbar
+        theme={theme}
+        onToggleTheme={toggleTheme}
+        onSelectRole={(r, t) => {
+          setRole(r);
+          if (r === "brand") setBrandTab(t);
+          else setCreatorTab(t);
         }}
-      >
-        {/* Brand Logo & Tag */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        onSelectNiche={(n) => {
+          setSelectedNiche(n);
+          setRole("brand");
+          setBrandTab("find");
+        }}
+      />
+
+      {/* Hero with Rotating Badge & Stacked Mockups */}
+      <HeroSection />
+
+      {/* Problem / Tool Sprawl Section */}
+      <ToolSprawl />
+
+      {/* Interactive Features Stage */}
+      <FeatureStage />
+
+      {/* 5-Step Connected Workflow */}
+      <WorkflowSection />
+
+      {/* ============================================================== */}
+      {/* THE LIVE PLATFORM APP WORKSPACE                                */}
+      {/* ============================================================== */}
+      <section id="app-workspace" style={{ padding: "80px 0" }}>
+        <div className="w">
+          <div style={{ textAlign: "center", maxWidth: "780px", margin: "0 auto 36px" }}>
+            <span
+              style={{
+                fontSize: "12px",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.08em",
+                color: "var(--or)",
+                backgroundColor: "var(--orb)",
+                padding: "4px 14px",
+                borderRadius: "99px",
+                display: "inline-block",
+                marginBottom: "12px",
+              }}
+            >
+              ⚡ Interactive Workspace
+            </span>
+            <h2 style={{ fontSize: "clamp(32px, 4.5vw, 54px)", marginBottom: "14px" }}>
+              Experience the Deal Operating System
+            </h2>
+            <p style={{ color: "var(--mu)", fontSize: "18px" }}>
+              Toggle between the <strong>Brand Portal</strong> and <strong>Creator Hub</strong> below to submit pitches, publish briefs, shortlist applicants, and search verified creators.
+            </p>
+          </div>
+
+          {/* Persona Switcher Tab Header */}
           <div
             style={{
-              width: "36px",
-              height: "36px",
-              borderRadius: "10px",
-              backgroundColor: "var(--ink)",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 4px 12px rgba(18, 20, 29, 0.15)",
+              justifyContent: "space-between",
+              padding: "8px 12px",
+              backgroundColor: "var(--card)",
+              border: "1px solid var(--ln)",
+              borderRadius: "20px",
+              marginBottom: "28px",
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.04)",
+              flexWrap: "wrap",
+              gap: "12px",
             }}
           >
-            <Sparkles size={18} color="var(--gold)" />
-          </div>
-          <div>
-            <div
-              style={{
-                fontSize: "20px",
-                fontWeight: 700,
-                fontFamily: "var(--font-heading)",
-                letterSpacing: "-0.03em",
-                color: "var(--ink)",
-                lineHeight: 1,
-              }}
-            >
-              Roster
+            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <button
+                onClick={() => setRole("brand")}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "8px 20px",
+                  borderRadius: "14px",
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  backgroundColor: role === "brand" ? "var(--btn)" : "transparent",
+                  color: role === "brand" ? "var(--btnt)" : "var(--mu)",
+                }}
+              >
+                <Briefcase size={16} />
+                <span>Brand Portal</span>
+              </button>
+
+              <button
+                onClick={() => setRole("creator")}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "8px 20px",
+                  borderRadius: "14px",
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  backgroundColor: role === "creator" ? "var(--btn)" : "transparent",
+                  color: role === "creator" ? "var(--btnt)" : "var(--mu)",
+                }}
+              >
+                <Users2 size={16} />
+                <span>Creator Hub</span>
+              </button>
             </div>
-            <div
-              style={{
-                fontSize: "10px",
-                fontFamily: "var(--font-mono)",
-                color: "var(--slate)",
-                marginTop: "2px",
-                textTransform: "uppercase",
-                letterSpacing: "0.06em",
-              }}
-            >
-              Creator Marketplace
-            </div>
-          </div>
-        </div>
 
-        {/* Persona Mode Switcher */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            padding: "4px",
-            backgroundColor: "var(--card)",
-            border: "1px solid var(--line)",
-            borderRadius: "9999px",
-            boxShadow: "0 2px 8px rgba(18, 20, 29, 0.04)",
-          }}
-        >
-          <button
-            onClick={() => setRole("brand")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "6px 16px",
-              borderRadius: "9999px",
-              fontSize: "13px",
-              fontWeight: 600,
-              backgroundColor: role === "brand" ? "var(--ink)" : "transparent",
-              color: role === "brand" ? "var(--paper)" : "var(--ink-soft)",
-            }}
-          >
-            <Briefcase size={14} />
-            <span>Brand Portal</span>
-          </button>
-
-          <button
-            onClick={() => setRole("creator")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "6px 16px",
-              borderRadius: "9999px",
-              fontSize: "13px",
-              fontWeight: 600,
-              backgroundColor: role === "creator" ? "var(--ink)" : "transparent",
-              color: role === "creator" ? "var(--paper)" : "var(--ink-soft)",
-            }}
-          >
-            <Users2 size={14} />
-            <span>Creator Hub</span>
-          </button>
-        </div>
-
-        {/* User Identity Pill */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          {role === "brand" ? (
+            {/* Current Persona Badge */}
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <div style={{ textAlign: "right" }}>
-                <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--ink)" }}>
-                  Glowly Skincare
+              {role === "brand" ? (
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--ink)" }}>
+                      Glowly Skincare
+                    </div>
+                    <div style={{ fontSize: "11px", color: "var(--mu)", fontFamily: "var(--font-mono)" }}>
+                      Active Brand
+                    </div>
+                  </div>
+                  <Avatar name="Glowly Skincare" size={36} />
                 </div>
-                <div style={{ fontSize: "11px", color: "var(--slate)", fontFamily: "var(--font-mono)" }}>
-                  Verified Brand
+              ) : (
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--ink)" }}>
+                      Aanya Kapoor
+                    </div>
+                    <div style={{ fontSize: "11px", color: "var(--mu)", fontFamily: "var(--font-mono)" }}>
+                      @aanya.styles
+                    </div>
+                  </div>
+                  <Avatar name="Aanya Kapoor" size={36} />
                 </div>
-              </div>
-              <Avatar name="Glowly Skincare" size={36} />
-            </div>
-          ) : (
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <div style={{ textAlign: "right" }}>
-                <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--ink)" }}>
-                  Aanya Kapoor
-                </div>
-                <div style={{ fontSize: "11px", color: "var(--slate)", fontFamily: "var(--font-mono)" }}>
-                  @aanya.styles
-                </div>
-              </div>
-              <Avatar name="Aanya Kapoor" size={36} />
-            </div>
-          )}
-        </div>
-      </header>
-
-      {/* Main App Container */}
-      <main style={{ maxWidth: "1080px", margin: "0 auto", padding: "32px 24px 80px" }}>
-        {/* KPI Summary Cards */}
-        <MetricsOverview
-          offersCount={offers.length}
-          creatorsCount={creators.length}
-          totalValue={totalDealValue}
-          avgEngagement="5.8"
-        />
-
-        {/* ============================================================== */}
-        {/* BRAND VIEW                                                     */}
-        {/* ============================================================== */}
-        {role === "brand" && (
-          <div>
-            {/* View Sub-Tabs */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: "12px",
-                marginBottom: "20px",
-                flexWrap: "wrap",
-              }}
-            >
-              <div style={{ display: "flex", gap: "8px" }}>
-                <button
-                  onClick={() => setBrandTab("find")}
-                  style={{
-                    padding: "8px 18px",
-                    borderRadius: "9999px",
-                    fontSize: "13px",
-                    fontWeight: 600,
-                    backgroundColor: brandTab === "find" ? "var(--ink)" : "var(--card)",
-                    color: brandTab === "find" ? "var(--paper)" : "var(--ink-soft)",
-                    border: "1px solid var(--line)",
-                  }}
-                >
-                  Discover Creators ({filteredCreators.length})
-                </button>
-                <button
-                  onClick={() => setBrandTab("campaigns")}
-                  style={{
-                    padding: "8px 18px",
-                    borderRadius: "9999px",
-                    fontSize: "13px",
-                    fontWeight: 600,
-                    backgroundColor: brandTab === "campaigns" ? "var(--ink)" : "var(--card)",
-                    color: brandTab === "campaigns" ? "var(--paper)" : "var(--ink-soft)",
-                    border: "1px solid var(--line)",
-                  }}
-                >
-                  My Campaigns ({brandOwnedOffers.length})
-                </button>
-              </div>
-
-              {brandTab === "campaigns" && (
-                <button
-                  onClick={() => setNewCampaignModal(true)}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    padding: "9px 18px",
-                    borderRadius: "12px",
-                    backgroundColor: "var(--cobalt)",
-                    color: "#FFFFFF",
-                    fontSize: "13px",
-                    fontWeight: 600,
-                    boxShadow: "0 4px 12px rgba(43, 69, 246, 0.2)",
-                  }}
-                >
-                  <Plus size={16} />
-                  <span>New Campaign Brief</span>
-                </button>
               )}
             </div>
+          </div>
 
-            {/* TAB 1: Discover Creators */}
-            {brandTab === "find" && (
-              <div>
-                {/* Search & Filter Bar */}
-                <div
-                  style={{
-                    backgroundColor: "var(--card)",
-                    border: "1px solid var(--line)",
-                    borderRadius: "16px",
-                    padding: "16px",
-                    marginBottom: "24px",
-                  }}
-                >
+          {/* ================= BRAND VIEW ================= */}
+          {role === "brand" && (
+            <div>
+              {/* Brand Sub Tabs */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: "20px",
+                  flexWrap: "wrap",
+                  gap: "12px",
+                }}
+              >
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <button
+                    onClick={() => setBrandTab("find")}
+                    className={`b ${brandTab === "find" ? "d" : ""}`}
+                    style={{ fontSize: "13px", padding: "8px 18px", borderRadius: "99px" }}
+                  >
+                    Discover Creators ({filteredCreators.length})
+                  </button>
+                  <button
+                    onClick={() => setBrandTab("campaigns")}
+                    className={`b ${brandTab === "campaigns" ? "d" : ""}`}
+                    style={{ fontSize: "13px", padding: "8px 18px", borderRadius: "99px" }}
+                  >
+                    My Campaigns ({brandOwnedOffers.length})
+                  </button>
+                </div>
+
+                {brandTab === "campaigns" && (
+                  <button
+                    onClick={() => setNewCampaignModal(true)}
+                    className="b or"
+                    style={{ fontSize: "13px", padding: "8px 18px", borderRadius: "12px" }}
+                  >
+                    <Plus size={15} />
+                    <span>New Campaign Brief</span>
+                  </button>
+                )}
+              </div>
+
+              {/* Brand Tab 1: Discover */}
+              {brandTab === "find" && (
+                <div>
+                  {/* Search and Filters */}
                   <div
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "12px",
-                      marginBottom: "14px",
-                      flexWrap: "wrap",
+                      backgroundColor: "var(--card)",
+                      border: "1px solid var(--ln)",
+                      borderRadius: "18px",
+                      padding: "18px",
+                      marginBottom: "24px",
                     }}
                   >
-                    {/* Live Search */}
                     <div
                       style={{
-                        flex: 1,
-                        minWidth: "240px",
-                        position: "relative",
                         display: "flex",
                         alignItems: "center",
+                        gap: "12px",
+                        marginBottom: "14px",
+                        flexWrap: "wrap",
                       }}
                     >
-                      <Search
-                        size={16}
-                        color="var(--slate)"
-                        style={{ position: "absolute", left: "12px" }}
-                      />
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search by name, handle, city, or niche..."
+                      <div
                         style={{
-                          width: "100%",
-                          padding: "10px 14px 10px 38px",
-                          borderRadius: "10px",
-                          border: "1px solid var(--line)",
-                          backgroundColor: "var(--paper)",
+                          flex: 1,
+                          minWidth: "240px",
+                          position: "relative",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Search
+                          size={16}
+                          color="var(--mu)"
+                          style={{ position: "absolute", left: "14px" }}
+                        />
+                        <input
+                          type="text"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          placeholder="Search creators by name, handle, city, or niche..."
+                          style={{
+                            width: "100%",
+                            padding: "11px 14px 11px 40px",
+                            borderRadius: "12px",
+                            border: "1px solid var(--ln)",
+                            backgroundColor: "var(--alt)",
+                            color: "var(--ink)",
+                            fontSize: "14px",
+                            outline: "none",
+                          }}
+                        />
+                      </div>
+
+                      <select
+                        value={selectedPlatform}
+                        onChange={(e) => setSelectedPlatform(e.target.value)}
+                        style={{
+                          padding: "11px 16px",
+                          borderRadius: "12px",
+                          border: "1px solid var(--ln)",
+                          backgroundColor: "var(--alt)",
                           color: "var(--ink)",
                           fontSize: "13px",
                           outline: "none",
+                          fontWeight: 500,
                         }}
-                      />
+                      >
+                        <option value="All">All Platforms</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="YouTube">YouTube</option>
+                      </select>
+
+                      <select
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value)}
+                        style={{
+                          padding: "11px 16px",
+                          borderRadius: "12px",
+                          border: "1px solid var(--ln)",
+                          backgroundColor: "var(--alt)",
+                          color: "var(--ink)",
+                          fontSize: "13px",
+                          outline: "none",
+                          fontWeight: 500,
+                        }}
+                      >
+                        <option value="default">Sort by Relevance</option>
+                        <option value="followers">Highest Followers</option>
+                        <option value="engagement">Highest Engagement</option>
+                        <option value="rate-low">Lowest Rate/Post</option>
+                        <option value="rate-high">Highest Rate/Post</option>
+                      </select>
                     </div>
 
-                    {/* Platform Selector */}
-                    <select
-                      value={selectedPlatform}
-                      onChange={(e) => setSelectedPlatform(e.target.value)}
-                      style={{
-                        padding: "10px 14px",
-                        borderRadius: "10px",
-                        border: "1px solid var(--line)",
-                        backgroundColor: "var(--paper)",
-                        color: "var(--ink)",
-                        fontSize: "13px",
-                        outline: "none",
-                        fontWeight: 500,
-                      }}
-                    >
-                      <option value="All">All Platforms</option>
-                      <option value="Instagram">Instagram</option>
-                      <option value="YouTube">YouTube</option>
-                    </select>
-
-                    {/* Sort Dropdown */}
-                    <select
-                      value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value)}
-                      style={{
-                        padding: "10px 14px",
-                        borderRadius: "10px",
-                        border: "1px solid var(--line)",
-                        backgroundColor: "var(--paper)",
-                        color: "var(--ink)",
-                        fontSize: "13px",
-                        outline: "none",
-                        fontWeight: 500,
-                      }}
-                    >
-                      <option value="default">Sort by Relevance</option>
-                      <option value="followers">Highest Followers</option>
-                      <option value="engagement">Highest Engagement</option>
-                      <option value="rate-low">Lowest Rate/Post</option>
-                      <option value="rate-high">Highest Rate/Post</option>
-                    </select>
-                  </div>
-
-                  {/* Niche Pills */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
-                    <span
-                      style={{
-                        fontSize: "11px",
-                        fontWeight: 600,
-                        color: "var(--slate)",
-                        textTransform: "uppercase",
-                        marginRight: "4px",
-                      }}
-                    >
-                      Niches:
-                    </span>
-                    <button
-                      onClick={() => setSelectedNiche("All")}
-                      style={{
-                        padding: "5px 12px",
-                        borderRadius: "9999px",
-                        fontSize: "12px",
-                        fontWeight: 600,
-                        backgroundColor: selectedNiche === "All" ? "var(--ink)" : "var(--paper)",
-                        color: selectedNiche === "All" ? "var(--paper)" : "var(--ink-soft)",
-                        border: "1px solid var(--line)",
-                      }}
-                    >
-                      All
-                    </button>
-                    {NICHES.map((n) => (
-                      <button
-                        key={n}
-                        onClick={() => setSelectedNiche(n)}
+                    {/* Niche Pills */}
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+                      <span
                         style={{
-                          padding: "5px 12px",
-                          borderRadius: "9999px",
                           fontSize: "12px",
-                          fontWeight: 500,
-                          backgroundColor: selectedNiche === n ? "var(--ink)" : "var(--paper)",
-                          color: selectedNiche === n ? "var(--paper)" : "var(--ink-soft)",
-                          border: "1px solid var(--line)",
+                          fontWeight: 600,
+                          color: "var(--mu)",
+                          textTransform: "uppercase",
+                          marginRight: "4px",
                         }}
                       >
-                        {n}
+                        Niches:
+                      </span>
+                      <button
+                        onClick={() => setSelectedNiche("All")}
+                        style={{
+                          padding: "5px 14px",
+                          borderRadius: "99px",
+                          fontSize: "13px",
+                          fontWeight: 600,
+                          backgroundColor: selectedNiche === "All" ? "var(--btn)" : "var(--alt)",
+                          color: selectedNiche === "All" ? "var(--btnt)" : "var(--mu)",
+                          border: "1px solid var(--ln)",
+                        }}
+                      >
+                        All
                       </button>
-                    ))}
+                      {NICHES.map((n) => (
+                        <button
+                          key={n}
+                          onClick={() => setSelectedNiche(n)}
+                          style={{
+                            padding: "5px 14px",
+                            borderRadius: "99px",
+                            fontSize: "13px",
+                            fontWeight: 500,
+                            backgroundColor: selectedNiche === n ? "var(--btn)" : "var(--alt)",
+                            color: selectedNiche === n ? "var(--btnt)" : "var(--mu)",
+                            border: "1px solid var(--ln)",
+                          }}
+                        >
+                          {n}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
 
-                {/* Creators Grid */}
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, minmax(310px, 1fr))",
-                    gap: "18px",
-                  }}
-                >
-                  {filteredCreators.map((creator) => (
-                    <CreatorCard
-                      key={creator.id}
-                      creator={creator}
-                      onInvite={(c) => setInviteModalCreator(c)}
-                    />
-                  ))}
-                </div>
-
-                {filteredCreators.length === 0 && (
+                  {/* Creators Grid */}
                   <div
                     style={{
-                      textAlign: "center",
-                      padding: "60px 20px",
-                      backgroundColor: "var(--card)",
-                      borderRadius: "18px",
-                      border: "1px dashed var(--line)",
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+                      gap: "20px",
                     }}
                   >
-                    <p style={{ color: "var(--slate)", fontSize: "14px" }}>
-                      No creators match your current filter criteria.
-                    </p>
-                    <button
-                      onClick={() => {
-                        setSelectedNiche("All");
-                        setSelectedPlatform("All");
-                        setSearchQuery("");
-                      }}
-                      style={{
-                        marginTop: "12px",
-                        fontSize: "13px",
-                        fontWeight: 600,
-                        color: "var(--cobalt)",
-                      }}
-                    >
-                      Clear all filters
-                    </button>
+                    {filteredCreators.map((creator) => (
+                      <CreatorCard
+                        key={creator.id}
+                        creator={creator}
+                        onInvite={(c) => setInviteModalCreator(c)}
+                      />
+                    ))}
                   </div>
-                )}
-              </div>
-            )}
 
-            {/* TAB 2: My Campaigns */}
-            {brandTab === "campaigns" && (
-              <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-                {brandOwnedOffers.map((offer) => {
-                  const campaignApps = applications.filter((a) => a.offerId === offer.id);
-
-                  return (
+                  {filteredCreators.length === 0 && (
                     <div
-                      key={offer.id}
                       style={{
+                        textAlign: "center",
+                        padding: "60px 20px",
                         backgroundColor: "var(--card)",
-                        border: "1px solid var(--line)",
-                        borderRadius: "18px",
-                        padding: "24px",
+                        borderRadius: "20px",
+                        border: "1px dashed var(--ln)",
                       }}
                     >
-                      <div
+                      <p style={{ color: "var(--mu)", fontSize: "15px" }}>
+                        No creators match your current filter criteria.
+                      </p>
+                      <button
+                        onClick={() => {
+                          setSelectedNiche("All");
+                          setSelectedPlatform("All");
+                          setSearchQuery("");
+                        }}
                         style={{
-                          display: "flex",
-                          alignItems: "flex-start",
-                          justifyContent: "space-between",
-                          marginBottom: "8px",
+                          marginTop: "12px",
+                          fontSize: "14px",
+                          fontWeight: 600,
+                          color: "var(--or)",
                         }}
                       >
-                        <div>
-                          <h3
-                            style={{
-                              fontSize: "18px",
-                              fontWeight: 700,
-                              fontFamily: "var(--font-heading)",
-                              color: "var(--ink)",
-                            }}
-                          >
-                            {offer.title}
-                          </h3>
-                          <p style={{ fontSize: "13px", color: "var(--slate)", marginTop: "2px" }}>
-                            {offer.niche} · {offer.deliverables} · {offer.days || 14} days remaining
-                          </p>
-                        </div>
+                        Clear all filters
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
 
-                        <div style={{ textAlign: "right" }}>
-                          <div
-                            style={{
-                              fontSize: "15px",
-                              fontWeight: 700,
-                              fontFamily: "var(--font-mono)",
-                              color: "var(--ink)",
-                            }}
-                          >
-                            {formatMoney(offer.budgetMin)} – {formatMoney(offer.budgetMax)}
-                          </div>
-                          <div style={{ fontSize: "11px", color: "var(--slate)", textTransform: "uppercase" }}>
-                            Target Budget
-                          </div>
-                        </div>
-                      </div>
+              {/* Brand Tab 2: My Campaigns */}
+              {brandTab === "campaigns" && (
+                <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                  {brandOwnedOffers.map((offer) => {
+                    const campaignApps = applications.filter((a) => a.offerId === offer.id);
 
-                      {/* Applicants Roster Drawer */}
+                    return (
                       <div
+                        key={offer.id}
                         style={{
-                          marginTop: "20px",
-                          paddingTop: "16px",
-                          borderTop: "1px solid var(--line)",
+                          backgroundColor: "var(--card)",
+                          border: "1px solid var(--ln)",
+                          borderRadius: "20px",
+                          padding: "24px",
                         }}
                       >
                         <div
                           style={{
                             display: "flex",
-                            alignItems: "center",
+                            alignItems: "flex-start",
                             justifyContent: "space-between",
-                            marginBottom: "12px",
+                            marginBottom: "8px",
+                            flexWrap: "wrap",
+                            gap: "12px",
                           }}
                         >
-                          <span
-                            style={{
-                              fontSize: "12px",
-                              fontWeight: 600,
-                              color: "var(--slate)",
-                              textTransform: "uppercase",
-                              letterSpacing: "0.05em",
-                            }}
-                          >
-                            Applicant Roster ({campaignApps.length})
-                          </span>
+                          <div>
+                            <h3
+                              style={{
+                                fontSize: "20px",
+                                fontWeight: 700,
+                                fontFamily: "var(--font-heading)",
+                                color: "var(--ink)",
+                              }}
+                            >
+                              {offer.title}
+                            </h3>
+                            <p style={{ fontSize: "14px", color: "var(--mu)", marginTop: "2px" }}>
+                              {offer.niche} · {offer.deliverables} · {offer.days || 14} days remaining
+                            </p>
+                          </div>
+
+                          <div style={{ textAlign: "right" }}>
+                            <div
+                              style={{
+                                fontSize: "16px",
+                                fontWeight: 700,
+                                fontFamily: "var(--font-mono)",
+                                color: "var(--ink)",
+                              }}
+                            >
+                              {formatMoney(offer.budgetMin)} – {formatMoney(offer.budgetMax)}
+                            </div>
+                            <div style={{ fontSize: "11px", color: "var(--mu)", textTransform: "uppercase" }}>
+                              Budget Allocation
+                            </div>
+                          </div>
                         </div>
 
-                        {campaignApps.length === 0 ? (
-                          <p style={{ fontSize: "13px", color: "var(--slate)", fontStyle: "italic" }}>
-                            No applicants yet. Creators can apply from the public marketplace.
-                          </p>
-                        ) : (
-                          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                            {campaignApps.map((app) => {
-                              const creator = creators.find((c) => c.id === app.influencerId);
-                              const creatorName = creator?.name || "Applicant";
+                        {/* Applicants Drawer */}
+                        <div
+                          style={{
+                            marginTop: "20px",
+                            paddingTop: "16px",
+                            borderTop: "1px solid var(--ln)",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              marginBottom: "12px",
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontSize: "12px",
+                                fontWeight: 600,
+                                color: "var(--mu)",
+                                textTransform: "uppercase",
+                                letterSpacing: "0.05em",
+                              }}
+                            >
+                              Applicant Roster ({campaignApps.length})
+                            </span>
+                          </div>
 
-                              return (
-                                <div
-                                  key={app.id}
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "space-between",
-                                    padding: "12px 14px",
-                                    borderRadius: "12px",
-                                    backgroundColor: "var(--paper)",
-                                    border: "1px solid var(--line)",
-                                    gap: "14px",
-                                    flexWrap: "wrap",
-                                  }}
-                                >
-                                  <div style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: "220px" }}>
-                                    <Avatar name={creatorName} size={36} />
-                                    <div>
-                                      <div style={{ fontSize: "14px", fontWeight: 700, color: "var(--ink)" }}>
-                                        {creatorName}
-                                      </div>
-                                      <div style={{ fontSize: "12px", color: "var(--slate)", fontFamily: "var(--font-mono)" }}>
-                                        {creator?.handle || "@creator"} · {formatMoney(app.rate)}
+                          {campaignApps.length === 0 ? (
+                            <p style={{ fontSize: "13px", color: "var(--mu)", fontStyle: "italic" }}>
+                              No applicants yet. Creators can apply from the public marketplace.
+                            </p>
+                          ) : (
+                            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                              {campaignApps.map((app) => {
+                                const creator = creators.find((c) => c.id === app.influencerId);
+                                const creatorName = creator?.name || "Applicant";
+
+                                return (
+                                  <div
+                                    key={app.id}
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "space-between",
+                                      padding: "12px 16px",
+                                      borderRadius: "14px",
+                                      backgroundColor: "var(--alt)",
+                                      border: "1px solid var(--ln)",
+                                      gap: "14px",
+                                      flexWrap: "wrap",
+                                    }}
+                                  >
+                                    <div style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: "220px" }}>
+                                      <Avatar name={creatorName} size={36} />
+                                      <div>
+                                        <div style={{ fontSize: "14px", fontWeight: 700, color: "var(--ink)" }}>
+                                          {creatorName}
+                                        </div>
+                                        <div style={{ fontSize: "12px", color: "var(--mu)", fontFamily: "var(--font-mono)" }}>
+                                          {creator?.handle || "@creator"} · {formatMoney(app.rate)}
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
 
-                                  {app.pitch && (
-                                    <div
-                                      style={{
-                                        flex: 1,
-                                        minWidth: "200px",
-                                        fontSize: "12px",
-                                        color: "var(--ink-soft)",
-                                        fontStyle: "italic",
-                                      }}
-                                    >
-                                      &ldquo;{app.pitch}&rdquo;
-                                    </div>
-                                  )}
+                                    {app.pitch && (
+                                      <div
+                                        style={{
+                                          flex: 1,
+                                          minWidth: "200px",
+                                          fontSize: "13px",
+                                          color: "var(--ink)",
+                                          fontStyle: "italic",
+                                        }}
+                                      >
+                                        &ldquo;{app.pitch}&rdquo;
+                                      </div>
+                                    )}
 
-                                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                    <StatusBadge status={app.status} />
+                                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                      <StatusBadge status={app.status} />
 
-                                    {/* Action buttons depending on current status */}
-                                    {(app.status === "Applied" || app.status === "Invited") && (
-                                      <div style={{ display: "flex", gap: "6px" }}>
+                                      {(app.status === "Applied" || app.status === "Invited") && (
+                                        <div style={{ display: "flex", gap: "6px" }}>
+                                          <button
+                                            onClick={() => handleUpdateApplicationStatus(app.id, "Shortlisted")}
+                                            style={{
+                                              padding: "6px 12px",
+                                              borderRadius: "8px",
+                                              backgroundColor: "rgba(234, 179, 8, 0.15)",
+                                              color: "#b45309",
+                                              fontSize: "12px",
+                                              fontWeight: 600,
+                                              display: "flex",
+                                              alignItems: "center",
+                                              gap: "4px",
+                                            }}
+                                            title="Shortlist applicant"
+                                          >
+                                            <Star size={13} />
+                                            <span>Shortlist</span>
+                                          </button>
+                                          <button
+                                            onClick={() => handleUpdateApplicationStatus(app.id, "Rejected")}
+                                            style={{
+                                              padding: "6px 9px",
+                                              borderRadius: "8px",
+                                              backgroundColor: "rgba(239, 68, 68, 0.12)",
+                                              color: "#dc2626",
+                                              fontSize: "12px",
+                                              display: "flex",
+                                              alignItems: "center",
+                                            }}
+                                            title="Decline applicant"
+                                          >
+                                            <XCircle size={14} />
+                                          </button>
+                                        </div>
+                                      )}
+
+                                      {app.status === "Shortlisted" && (
                                         <button
-                                          onClick={() => handleUpdateApplicationStatus(app.id, "Shortlisted")}
+                                          onClick={() => handleUpdateApplicationStatus(app.id, "Hired")}
+                                          className="b"
                                           style={{
-                                            padding: "6px 10px",
+                                            padding: "6px 16px",
                                             borderRadius: "8px",
-                                            backgroundColor: "var(--gold-soft)",
-                                            color: "var(--gold)",
+                                            backgroundColor: "var(--ok)",
+                                            color: "#FFFFFF",
+                                            border: "none",
                                             fontSize: "12px",
                                             fontWeight: 600,
                                             display: "flex",
                                             alignItems: "center",
                                             gap: "4px",
                                           }}
-                                          title="Shortlist applicant"
                                         >
-                                          <Star size={13} />
-                                          <span>Shortlist</span>
+                                          <CheckCircle2 size={13} />
+                                          <span>Hire Creator</span>
                                         </button>
-                                        <button
-                                          onClick={() => handleUpdateApplicationStatus(app.id, "Rejected")}
-                                          style={{
-                                            padding: "6px 8px",
-                                            borderRadius: "8px",
-                                            backgroundColor: "var(--red-soft)",
-                                            color: "var(--red)",
-                                            fontSize: "12px",
-                                            display: "flex",
-                                            alignItems: "center",
-                                          }}
-                                          title="Decline applicant"
-                                        >
-                                          <XCircle size={14} />
-                                        </button>
-                                      </div>
-                                    )}
-
-                                    {app.status === "Shortlisted" && (
-                                      <button
-                                        onClick={() => handleUpdateApplicationStatus(app.id, "Hired")}
-                                        style={{
-                                          padding: "6px 14px",
-                                          borderRadius: "8px",
-                                          backgroundColor: "var(--green)",
-                                          color: "#FFFFFF",
-                                          fontSize: "12px",
-                                          fontWeight: 600,
-                                          display: "flex",
-                                          alignItems: "center",
-                                          gap: "4px",
-                                        }}
-                                      >
-                                        <CheckCircle2 size={13} />
-                                        <span>Hire Creator</span>
-                                      </button>
-                                    )}
+                                      )}
+                                    </div>
                                   </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        )}
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ============================================================== */}
-        {/* CREATOR VIEW                                                   */}
-        {/* ============================================================== */}
-        {role === "creator" && (
-          <div>
-            {/* View Sub-Tabs */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                marginBottom: "20px",
-              }}
-            >
-              <button
-                onClick={() => setCreatorTab("browse")}
-                style={{
-                  padding: "8px 18px",
-                  borderRadius: "9999px",
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  backgroundColor: creatorTab === "browse" ? "var(--ink)" : "var(--card)",
-                  color: creatorTab === "browse" ? "var(--paper)" : "var(--ink-soft)",
-                  border: "1px solid var(--line)",
-                }}
-              >
-                Browse Deals ({filteredMarketOffers.length})
-              </button>
-              <button
-                onClick={() => setCreatorTab("applications")}
-                style={{
-                  padding: "8px 18px",
-                  borderRadius: "9999px",
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  backgroundColor: creatorTab === "applications" ? "var(--ink)" : "var(--card)",
-                  color: creatorTab === "applications" ? "var(--paper)" : "var(--ink-soft)",
-                  border: "1px solid var(--line)",
-                }}
-              >
-                My Applications ({creatorApplications.length})
-              </button>
-              <button
-                onClick={() => setCreatorTab("profile")}
-                style={{
-                  padding: "8px 18px",
-                  borderRadius: "9999px",
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  backgroundColor: creatorTab === "profile" ? "var(--ink)" : "var(--card)",
-                  color: creatorTab === "profile" ? "var(--paper)" : "var(--ink-soft)",
-                  border: "1px solid var(--line)",
-                }}
-              >
-                Verified Channel Profile
-              </button>
-            </div>
-
-            {/* TAB 1: Browse Deals */}
-            {creatorTab === "browse" && (
-              <div>
-                {/* Search & Niche Filter Bar */}
-                <div
-                  style={{
-                    backgroundColor: "var(--card)",
-                    border: "1px solid var(--line)",
-                    borderRadius: "16px",
-                    padding: "16px",
-                    marginBottom: "24px",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "12px",
-                      marginBottom: "14px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        flex: 1,
-                        position: "relative",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Search
-                        size={16}
-                        color="var(--slate)"
-                        style={{ position: "absolute", left: "12px" }}
-                      />
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search open briefs by brand or title..."
-                        style={{
-                          width: "100%",
-                          padding: "10px 14px 10px 38px",
-                          borderRadius: "10px",
-                          border: "1px solid var(--line)",
-                          backgroundColor: "var(--paper)",
-                          color: "var(--ink)",
-                          fontSize: "13px",
-                          outline: "none",
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Niche Pills */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
-                    <span
-                      style={{
-                        fontSize: "11px",
-                        fontWeight: 600,
-                        color: "var(--slate)",
-                        textTransform: "uppercase",
-                        marginRight: "4px",
-                      }}
-                    >
-                      Niches:
-                    </span>
-                    <button
-                      onClick={() => setSelectedNiche("All")}
-                      style={{
-                        padding: "5px 12px",
-                        borderRadius: "9999px",
-                        fontSize: "12px",
-                        fontWeight: 600,
-                        backgroundColor: selectedNiche === "All" ? "var(--ink)" : "var(--paper)",
-                        color: selectedNiche === "All" ? "var(--paper)" : "var(--ink-soft)",
-                        border: "1px solid var(--line)",
-                      }}
-                    >
-                      All
-                    </button>
-                    {NICHES.map((n) => (
-                      <button
-                        key={n}
-                        onClick={() => setSelectedNiche(n)}
-                        style={{
-                          padding: "5px 12px",
-                          borderRadius: "9999px",
-                          fontSize: "12px",
-                          fontWeight: 500,
-                          backgroundColor: selectedNiche === n ? "var(--ink)" : "var(--paper)",
-                          color: selectedNiche === n ? "var(--paper)" : "var(--ink-soft)",
-                          border: "1px solid var(--line)",
-                        }}
-                      >
-                        {n}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Ticket Cards List */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  {filteredMarketOffers.map((offer) => {
-                    const myApp = applications.find(
-                      (a) => a.offerId === offer.id && a.influencerId === CURRENT_CREATOR_ID
-                    );
-
-                    return (
-                      <DealCard
-                        key={offer.id}
-                        offer={offer}
-                        appliedStatus={myApp?.status}
-                        onApply={() => setApplyModalOffer(offer)}
-                      />
                     );
                   })}
                 </div>
+              )}
+            </div>
+          )}
 
-                {filteredMarketOffers.length === 0 && (
-                  <div
-                    style={{
-                      textAlign: "center",
-                      padding: "60px 20px",
-                      backgroundColor: "var(--card)",
-                      borderRadius: "18px",
-                      border: "1px dashed var(--line)",
-                    }}
-                  >
-                    <p style={{ color: "var(--slate)", fontSize: "14px" }}>
-                      No campaigns found matching this filter.
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* TAB 2: My Applications */}
-            {creatorTab === "applications" && (
-              <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-                {creatorApplications.length === 0 ? (
-                  <div
-                    style={{
-                      textAlign: "center",
-                      padding: "60px 20px",
-                      backgroundColor: "var(--card)",
-                      borderRadius: "18px",
-                      border: "1px dashed var(--line)",
-                    }}
-                  >
-                    <p style={{ color: "var(--slate)", fontSize: "14px" }}>
-                      You have not applied to any campaigns yet.
-                    </p>
-                    <button
-                      onClick={() => setCreatorTab("browse")}
-                      style={{
-                        marginTop: "12px",
-                        fontSize: "13px",
-                        fontWeight: 600,
-                        color: "var(--cobalt)",
-                      }}
-                    >
-                      Explore open brand briefs
-                    </button>
-                  </div>
-                ) : (
-                  creatorApplications.map((app) => {
-                    const offer = offers.find((o) => o.id === app.offerId);
-                    if (!offer) return null;
-
-                    return (
-                      <div
-                        key={app.id}
-                        style={{
-                          backgroundColor: "var(--card)",
-                          border: "1px solid var(--line)",
-                          borderRadius: "16px",
-                          padding: "18px 22px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          gap: "16px",
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        <div style={{ flex: 1, minWidth: "220px" }}>
-                          <span
-                            style={{
-                              fontSize: "11px",
-                              fontFamily: "var(--font-mono)",
-                              color: "var(--slate)",
-                              textTransform: "uppercase",
-                              fontWeight: 600,
-                            }}
-                          >
-                            {offer.brand || "Brand Partner"}
-                          </span>
-                          <h4
-                            style={{
-                              fontSize: "16px",
-                              fontWeight: 700,
-                              fontFamily: "var(--font-heading)",
-                              color: "var(--ink)",
-                              marginTop: "2px",
-                            }}
-                          >
-                            {offer.title}
-                          </h4>
-                          <div
-                            style={{
-                              fontSize: "12px",
-                              color: "var(--slate)",
-                              marginTop: "4px",
-                            }}
-                          >
-                            {offer.deliverables} · Proposed Rate: {formatMoney(app.rate)}
-                          </div>
-                        </div>
-
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                          <StatusBadge status={app.status} />
-                        </div>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-            )}
-
-            {/* TAB 3: Creator Profile & Channels */}
-            {creatorTab === "profile" && (
+          {/* ================= CREATOR VIEW ================= */}
+          {role === "creator" && (
+            <div>
+              {/* Creator Sub Tabs */}
               <div
                 style={{
-                  backgroundColor: "var(--card)",
-                  border: "1px solid var(--line)",
-                  borderRadius: "20px",
-                  padding: "28px",
-                  maxWidth: "680px",
-                  margin: "0 auto",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  marginBottom: "20px",
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "18px", marginBottom: "22px" }}>
-                  <Avatar name="Aanya Kapoor" size={68} />
-                  <div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <h3
+                <button
+                  onClick={() => setCreatorTab("browse")}
+                  className={`b ${creatorTab === "browse" ? "d" : ""}`}
+                  style={{ fontSize: "13px", padding: "8px 18px", borderRadius: "99px" }}
+                >
+                  Browse Deals ({filteredMarketOffers.length})
+                </button>
+                <button
+                  onClick={() => setCreatorTab("applications")}
+                  className={`b ${creatorTab === "applications" ? "d" : ""}`}
+                  style={{ fontSize: "13px", padding: "8px 18px", borderRadius: "99px" }}
+                >
+                  My Applications ({creatorApplications.length})
+                </button>
+                <button
+                  onClick={() => setCreatorTab("profile")}
+                  className={`b ${creatorTab === "profile" ? "d" : ""}`}
+                  style={{ fontSize: "13px", padding: "8px 18px", borderRadius: "99px" }}
+                >
+                  Verified Channel Profile
+                </button>
+              </div>
+
+              {/* Creator Tab 1: Browse Deals */}
+              {creatorTab === "browse" && (
+                <div>
+                  {/* Search and Niche filter */}
+                  <div
+                    style={{
+                      backgroundColor: "var(--card)",
+                      border: "1px solid var(--ln)",
+                      borderRadius: "18px",
+                      padding: "18px",
+                      marginBottom: "24px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "12px",
+                        marginBottom: "14px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          flex: 1,
+                          position: "relative",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Search
+                          size={16}
+                          color="var(--mu)"
+                          style={{ position: "absolute", left: "14px" }}
+                        />
+                        <input
+                          type="text"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          placeholder="Search open briefs by brand or campaign title..."
+                          style={{
+                            width: "100%",
+                            padding: "11px 14px 11px 40px",
+                            borderRadius: "12px",
+                            border: "1px solid var(--ln)",
+                            backgroundColor: "var(--alt)",
+                            color: "var(--ink)",
+                            fontSize: "14px",
+                            outline: "none",
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+                      <span
+                        style={{
+                          fontSize: "12px",
+                          fontWeight: 600,
+                          color: "var(--mu)",
+                          textTransform: "uppercase",
+                          marginRight: "4px",
+                        }}
+                      >
+                        Niches:
+                      </span>
+                      <button
+                        onClick={() => setSelectedNiche("All")}
+                        style={{
+                          padding: "5px 14px",
+                          borderRadius: "99px",
+                          fontSize: "13px",
+                          fontWeight: 600,
+                          backgroundColor: selectedNiche === "All" ? "var(--btn)" : "var(--alt)",
+                          color: selectedNiche === "All" ? "var(--btnt)" : "var(--mu)",
+                          border: "1px solid var(--ln)",
+                        }}
+                      >
+                        All
+                      </button>
+                      {NICHES.map((n) => (
+                        <button
+                          key={n}
+                          onClick={() => setSelectedNiche(n)}
+                          style={{
+                            padding: "5px 14px",
+                            borderRadius: "99px",
+                            fontSize: "13px",
+                            fontWeight: 500,
+                            backgroundColor: selectedNiche === n ? "var(--btn)" : "var(--alt)",
+                            color: selectedNiche === n ? "var(--btnt)" : "var(--mu)",
+                            border: "1px solid var(--ln)",
+                          }}
+                        >
+                          {n}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Deals List */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                    {filteredMarketOffers.map((offer) => {
+                      const myApp = applications.find(
+                        (a) => a.offerId === offer.id && a.influencerId === CURRENT_CREATOR_ID
+                      );
+
+                      return (
+                        <DealCard
+                          key={offer.id}
+                          offer={offer}
+                          appliedStatus={myApp?.status}
+                          onApply={() => setApplyModalOffer(offer)}
+                        />
+                      );
+                    })}
+                  </div>
+
+                  {filteredMarketOffers.length === 0 && (
+                    <div
+                      style={{
+                        textAlign: "center",
+                        padding: "60px 20px",
+                        backgroundColor: "var(--card)",
+                        borderRadius: "20px",
+                        border: "1px dashed var(--ln)",
+                      }}
+                    >
+                      <p style={{ color: "var(--mu)", fontSize: "15px" }}>
+                        No campaigns found matching this filter.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Creator Tab 2: My Applications */}
+              {creatorTab === "applications" && (
+                <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                  {creatorApplications.length === 0 ? (
+                    <div
+                      style={{
+                        textAlign: "center",
+                        padding: "60px 20px",
+                        backgroundColor: "var(--card)",
+                        borderRadius: "20px",
+                        border: "1px dashed var(--ln)",
+                      }}
+                    >
+                      <p style={{ color: "var(--mu)", fontSize: "15px" }}>
+                        You have not applied to any campaigns yet.
+                      </p>
+                      <button
+                        onClick={() => setCreatorTab("browse")}
+                        style={{
+                          marginTop: "12px",
+                          fontSize: "14px",
+                          fontWeight: 600,
+                          color: "var(--or)",
+                        }}
+                      >
+                        Explore open brand briefs
+                      </button>
+                    </div>
+                  ) : (
+                    creatorApplications.map((app) => {
+                      const offer = offers.find((o) => o.id === app.offerId);
+                      if (!offer) return null;
+
+                      return (
+                        <div
+                          key={app.id}
+                          style={{
+                            backgroundColor: "var(--card)",
+                            border: "1px solid var(--ln)",
+                            borderRadius: "18px",
+                            padding: "20px 24px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            gap: "16px",
+                            flexWrap: "wrap",
+                          }}
+                        >
+                          <div style={{ flex: 1, minWidth: "220px" }}>
+                            <span
+                              style={{
+                                fontSize: "11px",
+                                fontFamily: "var(--font-mono)",
+                                color: "var(--mu)",
+                                textTransform: "uppercase",
+                                fontWeight: 600,
+                              }}
+                            >
+                              {offer.brand || "Brand Partner"}
+                            </span>
+                            <h4
+                              style={{
+                                fontSize: "18px",
+                                fontWeight: 700,
+                                fontFamily: "var(--font-heading)",
+                                color: "var(--ink)",
+                                marginTop: "2px",
+                              }}
+                            >
+                              {offer.title}
+                            </h4>
+                            <div
+                              style={{
+                                fontSize: "13px",
+                                color: "var(--mu)",
+                                marginTop: "4px",
+                              }}
+                            >
+                              {offer.deliverables} · Proposed Rate: {formatMoney(app.rate)}
+                            </div>
+                          </div>
+
+                          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                            <StatusBadge status={app.status} />
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              )}
+
+              {/* Creator Tab 3: Profile */}
+              {creatorTab === "profile" && (
+                <div
+                  style={{
+                    backgroundColor: "var(--card)",
+                    border: "1px solid var(--ln)",
+                    borderRadius: "24px",
+                    padding: "32px",
+                    maxWidth: "700px",
+                    margin: "0 auto",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: "24px" }}>
+                    <Avatar name="Aanya Kapoor" size={72} />
+                    <div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <h3
+                          style={{
+                            fontSize: "24px",
+                            fontWeight: 700,
+                            fontFamily: "var(--font-heading)",
+                            color: "var(--ink)",
+                          }}
+                        >
+                          Aanya Kapoor
+                        </h3>
+                        <ShieldCheck size={20} color="var(--ok)" />
+                      </div>
+                      <p style={{ fontSize: "14px", color: "var(--mu)", fontFamily: "var(--font-mono)", marginTop: "2px" }}>
+                        @aanya.styles · Fashion & Aesthetics · Delhi, India
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Metrics */}
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(3, 1fr)",
+                      gap: "12px",
+                      marginBottom: "24px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        backgroundColor: "var(--alt)",
+                        padding: "16px",
+                        borderRadius: "16px",
+                        textAlign: "center",
+                        border: "1px solid var(--ln)",
+                      }}
+                    >
+                      <div style={{ fontSize: "11px", color: "var(--mu)", fontWeight: 600, textTransform: "uppercase" }}>
+                        Verified Reach
+                      </div>
+                      <div
                         style={{
                           fontSize: "22px",
                           fontWeight: 700,
-                          fontFamily: "var(--font-heading)",
+                          fontFamily: "var(--font-mono)",
                           color: "var(--ink)",
+                          marginTop: "4px",
                         }}
                       >
-                        Aanya Kapoor
-                      </h3>
-                      <ShieldCheck size={18} color="var(--cobalt)" fill="var(--cobalt-soft)" />
+                        245K
+                      </div>
                     </div>
-                    <p style={{ fontSize: "14px", color: "var(--slate)", fontFamily: "var(--font-mono)" }}>
-                      @aanya.styles · Fashion & Aesthetics · Delhi, India
+
+                    <div
+                      style={{
+                        backgroundColor: "var(--alt)",
+                        padding: "16px",
+                        borderRadius: "16px",
+                        textAlign: "center",
+                        border: "1px solid var(--ln)",
+                      }}
+                    >
+                      <div style={{ fontSize: "11px", color: "var(--mu)", fontWeight: 600, textTransform: "uppercase" }}>
+                        Engagement Rate
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "22px",
+                          fontWeight: 700,
+                          fontFamily: "var(--font-mono)",
+                          color: "var(--ok)",
+                          marginTop: "4px",
+                        }}
+                      >
+                        4.8%
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        backgroundColor: "var(--alt)",
+                        padding: "16px",
+                        borderRadius: "16px",
+                        textAlign: "center",
+                        border: "1px solid var(--ln)",
+                      }}
+                    >
+                      <div style={{ fontSize: "11px", color: "var(--mu)", fontWeight: 600, textTransform: "uppercase" }}>
+                        Standard Rate
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "20px",
+                          fontWeight: 700,
+                          fontFamily: "var(--font-mono)",
+                          color: "var(--ink)",
+                          marginTop: "4px",
+                        }}
+                      >
+                        ₹25,000
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bio */}
+                  <div style={{ marginBottom: "26px" }}>
+                    <div
+                      style={{
+                        fontSize: "12px",
+                        fontWeight: 600,
+                        color: "var(--mu)",
+                        textTransform: "uppercase",
+                        marginBottom: "6px",
+                      }}
+                    >
+                      Creator Narrative
+                    </div>
+                    <p style={{ fontSize: "14px", color: "var(--ink)", lineHeight: 1.6 }}>
+                      Everyday fashion, thrifted finds, and outfit breakdowns for the modern aesthetic enthusiast.
+                      Regularly partner with ethical fashion labels, lifestyle accessories, and sustainable beauty brands.
                     </p>
                   </div>
-                </div>
 
-                {/* Verified Metrics Cards */}
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(3, 1fr)",
-                    gap: "12px",
-                    marginBottom: "22px",
-                  }}
-                >
+                  {/* Connected Channels */}
                   <div
                     style={{
-                      backgroundColor: "var(--paper)",
-                      padding: "16px",
-                      borderRadius: "14px",
-                      textAlign: "center",
-                      border: "1px solid var(--line)",
+                      backgroundColor: "var(--alt)",
+                      padding: "18px 20px",
+                      borderRadius: "16px",
+                      border: "1px solid var(--ln)",
                     }}
                   >
-                    <div style={{ fontSize: "11px", color: "var(--slate)", fontWeight: 600, textTransform: "uppercase" }}>
-                      Total Reach
-                    </div>
                     <div
                       style={{
-                        fontSize: "20px",
-                        fontWeight: 700,
-                        fontFamily: "var(--font-mono)",
-                        color: "var(--ink)",
-                        marginTop: "4px",
+                        fontSize: "12px",
+                        fontWeight: 600,
+                        color: "var(--mu)",
+                        textTransform: "uppercase",
+                        marginBottom: "14px",
                       }}
                     >
-                      245K
+                      Connected Social Accounts
                     </div>
-                  </div>
 
-                  <div
-                    style={{
-                      backgroundColor: "var(--paper)",
-                      padding: "16px",
-                      borderRadius: "14px",
-                      textAlign: "center",
-                      border: "1px solid var(--line)",
-                    }}
-                  >
-                    <div style={{ fontSize: "11px", color: "var(--slate)", fontWeight: 600, textTransform: "uppercase" }}>
-                      Engagement Rate
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "20px",
-                        fontWeight: 700,
-                        fontFamily: "var(--font-mono)",
-                        color: "var(--green)",
-                        marginTop: "4px",
-                      }}
-                    >
-                      4.8%
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      backgroundColor: "var(--paper)",
-                      padding: "16px",
-                      borderRadius: "14px",
-                      textAlign: "center",
-                      border: "1px solid var(--line)",
-                    }}
-                  >
-                    <div style={{ fontSize: "11px", color: "var(--slate)", fontWeight: 600, textTransform: "uppercase" }}>
-                      Standard Rate
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "18px",
-                        fontWeight: 700,
-                        fontFamily: "var(--font-mono)",
-                        color: "var(--ink)",
-                        marginTop: "4px",
-                      }}
-                    >
-                      ₹25,000
-                    </div>
-                  </div>
-                </div>
-
-                {/* Bio & Details */}
-                <div style={{ marginBottom: "24px" }}>
-                  <div
-                    style={{
-                      fontSize: "12px",
-                      fontWeight: 600,
-                      color: "var(--slate)",
-                      textTransform: "uppercase",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    Creator Narrative
-                  </div>
-                  <p style={{ fontSize: "14px", color: "var(--ink-soft)", lineHeight: 1.6 }}>
-                    Everyday fashion, thrifted finds, and outfit breakdowns for the modern aesthetic enthusiast.
-                    Regularly partner with ethical fashion labels, lifestyle accessories, and sustainable beauty brands.
-                  </p>
-                </div>
-
-                {/* Connected Verified Channels */}
-                <div
-                  style={{
-                    backgroundColor: "var(--paper)",
-                    padding: "16px 18px",
-                    borderRadius: "14px",
-                    border: "1px solid var(--line)",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: "12px",
-                      fontWeight: 600,
-                      color: "var(--slate)",
-                      textTransform: "uppercase",
-                      marginBottom: "12px",
-                    }}
-                  >
-                    Connected Social Accounts
-                  </div>
-
-                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                        <Instagram size={18} color="#DB2777" />
-                        <span style={{ fontSize: "13px", fontWeight: 600, color: "var(--ink)" }}>
-                          @aanya.styles
+                    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                          <Instagram size={18} color="#db2777" />
+                          <span style={{ fontSize: "14px", fontWeight: 600, color: "var(--ink)" }}>
+                            @aanya.styles
+                          </span>
+                        </div>
+                        <span
+                          style={{
+                            fontSize: "11px",
+                            fontWeight: 600,
+                            color: "var(--ok)",
+                            backgroundColor: "var(--ok-bg)",
+                            padding: "2px 9px",
+                            borderRadius: "6px",
+                          }}
+                        >
+                          ✓ Verified via OAuth
                         </span>
                       </div>
-                      <span
-                        style={{
-                          fontSize: "11px",
-                          fontWeight: 600,
-                          color: "var(--green)",
-                          backgroundColor: "var(--green-soft)",
-                          padding: "2px 8px",
-                          borderRadius: "4px",
-                        }}
-                      >
-                        ✓ Verified via OAuth
-                      </span>
-                    </div>
 
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                        <Youtube size={18} color="#DC2626" />
-                        <span style={{ fontSize: "13px", fontWeight: 600, color: "var(--ink)" }}>
-                          Aanya Kapoor Vlogs
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                          <Youtube size={18} color="#dc2626" />
+                          <span style={{ fontSize: "14px", fontWeight: 600, color: "var(--ink)" }}>
+                            Aanya Kapoor Vlogs
+                          </span>
+                        </div>
+                        <span
+                          style={{
+                            fontSize: "11px",
+                            fontWeight: 600,
+                            color: "var(--or)",
+                            backgroundColor: "var(--orb)",
+                            padding: "2px 9px",
+                            borderRadius: "6px",
+                          }}
+                        >
+                          Sync via YouTube Data API
                         </span>
                       </div>
-                      <span
-                        style={{
-                          fontSize: "11px",
-                          fontWeight: 600,
-                          color: "var(--cobalt)",
-                          backgroundColor: "var(--cobalt-soft)",
-                          padding: "2px 8px",
-                          borderRadius: "4px",
-                        }}
-                      >
-                        Sync via Google API
-                      </span>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* CONTINUOUS TESTIMONIAL MARQUEE */}
+      <TestimonialMarquee />
+
+      {/* INTEGRATIONS SECTION */}
+      <section className="wb-int" id="integrations">
+        <div className="w">
+          <div className="wb-h" style={{ marginInline: "auto" }}>
+            <h2>Connect with the tools you already use</h2>
+            <p>Sign in with Google, sync YouTube subscriber stats, and plug in payments as they ship.</p>
           </div>
-        )}
-      </main>
+
+          <div className="wb-orb">
+            <span>🔐 Google OAuth</span>
+            <span>▶️ YouTube Data API</span>
+            <span>📷 Instagram Graph</span>
+            <span>💳 Razorpay Escrow</span>
+            <span>💠 Stripe Invoicing</span>
+            <span>💬 Slack Webhooks</span>
+            <span>✉️ Gmail Notifications</span>
+            <span>📱 WhatsApp Updates</span>
+          </div>
+        </div>
+      </section>
+
+      {/* INFINITE MOVING RIBBON */}
+      <div className="wb-band" aria-hidden="true">
+        <div>
+          <span>Brands + Creators, working as one</span>
+          <span>Never chase a DM again</span>
+          <span>Brands + Creators, working as one</span>
+          <span>Never chase a DM again</span>
+        </div>
+      </div>
+
+      {/* BOTTOM GRADIENT CTA BANNER */}
+      <section style={{ padding: "30px 0 90px" }}>
+        <div className="wb-end">
+          <h2>Go to market with creators who actually deliver</h2>
+          <p>One unified workspace for campaign briefs, pitch submissions, verified hiring, and transparent payouts.</p>
+          <div className="wb-cta">
+            <a className="b d" href="#app-workspace">
+              Start building for free
+            </a>
+            <a className="b" href="#app-workspace" style={{ background: "rgba(255, 255, 255, 0.15)", color: "#fff", borderColor: "rgba(255, 255, 255, 0.3)" }}>
+              Contact our team
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="wb-footer">
+        <div className="w">
+          <div className="wb-fg">
+            <div>
+              <a className="wb-logo" href="#">
+                <i></i>
+                <span>Roster</span>
+              </a>
+              <p style={{ color: "var(--mu)", fontSize: "14px", maxWidth: "22em", marginTop: "12px", lineHeight: 1.5 }}>
+                Direct creator marketplace and deal operating system for forward-thinking brands and creators.
+              </p>
+            </div>
+
+            <div>
+              <h4>Product</h4>
+              <a href="#app-workspace">Creator Discovery</a>
+              <a href="#app-workspace">Campaign Briefs</a>
+              <a href="#app-workspace">Applicant Pipeline</a>
+              <a href="#app-workspace">Verified Analytics</a>
+            </div>
+
+            <div>
+              <h4>Solutions</h4>
+              <a href="#app-workspace">D2C Brands</a>
+              <a href="#app-workspace">Agencies</a>
+              <a href="#app-workspace">Solo Creators</a>
+              <a href="#app-workspace">Enterprise</a>
+            </div>
+
+            <div>
+              <h4>Resources</h4>
+              <a href="https://github.com/dhruvsaini-code/roster" target="_blank" rel="noopener noreferrer">
+                GitHub Repository
+              </a>
+              <a href="#how-it-works">How It Works</a>
+              <a href="#integrations">Integrations</a>
+              <a href="#">Help Center</a>
+            </div>
+
+            <div>
+              <h4>Comparison</h4>
+              <a href="#next">Roster vs Sheets</a>
+              <a href="#next">Roster vs Instagram DMs</a>
+              <a href="#next">Roster vs WhatsApp</a>
+              <a href="#next">Roster vs Agencies</a>
+            </div>
+          </div>
+
+          <div className="wb-cp">
+            <span>© 2026 Roster. Inspired by WorksBuddy. Built by Dhruv Saini.</span>
+            <span>Privacy Policy · Terms of Service · Security</span>
+          </div>
+        </div>
+      </footer>
+
+      {/* Floating Scroll Down button */}
+      <a className="wb-dn" href="#next" aria-label="Scroll down">
+        ⌄
+      </a>
 
       {/* ============================================================== */}
       {/* MODALS                                                         */}
@@ -1368,7 +1420,7 @@ export default function Home() {
                   display: "block",
                   fontSize: "12px",
                   fontWeight: 600,
-                  color: "var(--ink-soft)",
+                  color: "var(--mu)",
                   marginBottom: "6px",
                 }}
               >
@@ -1384,8 +1436,8 @@ export default function Home() {
                   width: "100%",
                   padding: "12px",
                   borderRadius: "12px",
-                  border: "1px solid var(--line)",
-                  backgroundColor: "var(--paper)",
+                  border: "1px solid var(--ln)",
+                  backgroundColor: "var(--alt)",
                   color: "var(--ink)",
                   fontSize: "13px",
                   outline: "none",
@@ -1400,7 +1452,7 @@ export default function Home() {
                   display: "block",
                   fontSize: "12px",
                   fontWeight: 600,
-                  color: "var(--ink-soft)",
+                  color: "var(--mu)",
                   marginBottom: "6px",
                 }}
               >
@@ -1416,8 +1468,8 @@ export default function Home() {
                   width: "100%",
                   padding: "12px",
                   borderRadius: "12px",
-                  border: "1px solid var(--line)",
-                  backgroundColor: "var(--paper)",
+                  border: "1px solid var(--ln)",
+                  backgroundColor: "var(--alt)",
                   color: "var(--ink)",
                   fontSize: "14px",
                   fontFamily: "var(--font-mono)",
@@ -1429,12 +1481,11 @@ export default function Home() {
             <button
               type="submit"
               disabled={!pitchText.trim() || !proposedRate.trim()}
+              className="b or"
               style={{
                 width: "100%",
-                padding: "12px",
+                padding: "13px",
                 borderRadius: "12px",
-                backgroundColor: "var(--cobalt)",
-                color: "#FFFFFF",
                 fontSize: "14px",
                 fontWeight: 600,
                 display: "flex",
@@ -1445,7 +1496,7 @@ export default function Home() {
               }}
             >
               <Send size={15} />
-              <span>Submit Deal Application</span>
+              <span>Submit Deal Pitch</span>
             </button>
           </form>
         </Modal>
@@ -1465,7 +1516,7 @@ export default function Home() {
                   display: "block",
                   fontSize: "12px",
                   fontWeight: 600,
-                  color: "var(--ink-soft)",
+                  color: "var(--mu)",
                   marginBottom: "6px",
                 }}
               >
@@ -1479,8 +1530,8 @@ export default function Home() {
                   width: "100%",
                   padding: "12px",
                   borderRadius: "12px",
-                  border: "1px solid var(--line)",
-                  backgroundColor: "var(--paper)",
+                  border: "1px solid var(--ln)",
+                  backgroundColor: "var(--alt)",
                   color: "var(--ink)",
                   fontSize: "13px",
                   outline: "none",
@@ -1498,12 +1549,11 @@ export default function Home() {
             <button
               type="submit"
               disabled={!inviteCampaignId}
+              className="b d"
               style={{
                 width: "100%",
-                padding: "12px",
+                padding: "13px",
                 borderRadius: "12px",
-                backgroundColor: "var(--ink)",
-                color: "var(--paper)",
                 fontSize: "14px",
                 fontWeight: 600,
                 display: "flex",
@@ -1534,7 +1584,7 @@ export default function Home() {
                   display: "block",
                   fontSize: "12px",
                   fontWeight: 600,
-                  color: "var(--ink-soft)",
+                  color: "var(--mu)",
                   marginBottom: "6px",
                 }}
               >
@@ -1550,8 +1600,8 @@ export default function Home() {
                   width: "100%",
                   padding: "10px 12px",
                   borderRadius: "10px",
-                  border: "1px solid var(--line)",
-                  backgroundColor: "var(--paper)",
+                  border: "1px solid var(--ln)",
+                  backgroundColor: "var(--alt)",
                   color: "var(--ink)",
                   fontSize: "13px",
                   outline: "none",
@@ -1565,7 +1615,7 @@ export default function Home() {
                   display: "block",
                   fontSize: "12px",
                   fontWeight: 600,
-                  color: "var(--ink-soft)",
+                  color: "var(--mu)",
                   marginBottom: "6px",
                 }}
               >
@@ -1578,8 +1628,8 @@ export default function Home() {
                   width: "100%",
                   padding: "10px 12px",
                   borderRadius: "10px",
-                  border: "1px solid var(--line)",
-                  backgroundColor: "var(--paper)",
+                  border: "1px solid var(--ln)",
+                  backgroundColor: "var(--alt)",
                   color: "var(--ink)",
                   fontSize: "13px",
                   outline: "none",
@@ -1607,7 +1657,7 @@ export default function Home() {
                     display: "block",
                     fontSize: "12px",
                     fontWeight: 600,
-                    color: "var(--ink-soft)",
+                    color: "var(--mu)",
                     marginBottom: "6px",
                   }}
                 >
@@ -1623,8 +1673,8 @@ export default function Home() {
                     width: "100%",
                     padding: "10px 12px",
                     borderRadius: "10px",
-                    border: "1px solid var(--line)",
-                    backgroundColor: "var(--paper)",
+                    border: "1px solid var(--ln)",
+                    backgroundColor: "var(--alt)",
                     color: "var(--ink)",
                     fontSize: "13px",
                     fontFamily: "var(--font-mono)",
@@ -1638,7 +1688,7 @@ export default function Home() {
                     display: "block",
                     fontSize: "12px",
                     fontWeight: 600,
-                    color: "var(--ink-soft)",
+                    color: "var(--mu)",
                     marginBottom: "6px",
                   }}
                 >
@@ -1654,8 +1704,8 @@ export default function Home() {
                     width: "100%",
                     padding: "10px 12px",
                     borderRadius: "10px",
-                    border: "1px solid var(--line)",
-                    backgroundColor: "var(--paper)",
+                    border: "1px solid var(--ln)",
+                    backgroundColor: "var(--alt)",
                     color: "var(--ink)",
                     fontSize: "13px",
                     fontFamily: "var(--font-mono)",
@@ -1671,7 +1721,7 @@ export default function Home() {
                   display: "block",
                   fontSize: "12px",
                   fontWeight: 600,
-                  color: "var(--ink-soft)",
+                  color: "var(--mu)",
                   marginBottom: "6px",
                 }}
               >
@@ -1687,8 +1737,8 @@ export default function Home() {
                   width: "100%",
                   padding: "10px 12px",
                   borderRadius: "10px",
-                  border: "1px solid var(--line)",
-                  backgroundColor: "var(--paper)",
+                  border: "1px solid var(--ln)",
+                  backgroundColor: "var(--alt)",
                   color: "var(--ink)",
                   fontSize: "13px",
                   outline: "none",
@@ -1699,12 +1749,11 @@ export default function Home() {
             <button
               type="submit"
               disabled={!ncTitle.trim() || !ncMin || !ncMax || !ncDeliverables.trim()}
+              className="b or"
               style={{
                 width: "100%",
-                padding: "12px",
+                padding: "13px",
                 borderRadius: "12px",
-                backgroundColor: "var(--cobalt)",
-                color: "#FFFFFF",
                 fontSize: "14px",
                 fontWeight: 600,
                 display: "flex",
