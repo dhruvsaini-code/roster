@@ -17,34 +17,35 @@ export default function CreatorCard({ creator, onInvite }) {
     <div
       style={{
         backgroundColor: "var(--card)",
-        border: "1px solid var(--line)",
-        borderRadius: "18px",
-        padding: "20px",
+        border: "1px solid var(--ln)",
+        borderRadius: "20px",
+        padding: "22px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        transition: "transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease",
+        transition: "transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease",
+        boxShadow: "0 4px 16px rgba(0, 0, 0, 0.03)",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-2px)";
-        e.currentTarget.style.boxShadow = "0 10px 24px -6px rgba(18, 20, 29, 0.06)";
-        e.currentTarget.style.borderColor = "var(--line-strong)";
+        e.currentTarget.style.transform = "translateY(-3px)";
+        e.currentTarget.style.boxShadow = "var(--sh-card)";
+        e.currentTarget.style.borderColor = "var(--or)";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "none";
-        e.currentTarget.style.borderColor = "var(--line)";
+        e.currentTarget.style.boxShadow = "0 4px 16px rgba(0, 0, 0, 0.03)";
+        e.currentTarget.style.borderColor = "var(--ln)";
       }}
     >
       <div>
         {/* Header with avatar, handle and verified platform */}
         <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "14px" }}>
-          <Avatar name={creator.name} size={44} />
+          <Avatar name={creator.name} size={46} />
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
               <h3
                 style={{
-                  fontSize: "16px",
+                  fontSize: "17px",
                   fontWeight: 700,
                   fontFamily: "var(--font-heading)",
                   color: "var(--ink)",
@@ -55,12 +56,12 @@ export default function CreatorCard({ creator, onInvite }) {
               >
                 {creator.name}
               </h3>
-              <CheckCircle size={14} color="var(--cobalt)" fill="var(--cobalt-soft)" />
+              <CheckCircle size={14} color="var(--ok)" />
             </div>
             <p
               style={{
                 fontSize: "13px",
-                color: "var(--slate)",
+                color: "var(--mu)",
                 fontFamily: "var(--font-mono)",
                 whiteSpace: "nowrap",
                 overflow: "hidden",
@@ -73,10 +74,10 @@ export default function CreatorCard({ creator, onInvite }) {
 
           <div
             style={{
-              padding: "6px 8px",
+              padding: "6px 9px",
               borderRadius: "8px",
-              backgroundColor: isInstagram ? "#FDF2F8" : "#FEF2F2",
-              color: isInstagram ? "#DB2777" : "#DC2626",
+              backgroundColor: isInstagram ? "rgba(219, 39, 119, 0.1)" : "rgba(220, 38, 38, 0.1)",
+              color: isInstagram ? "#db2777" : "#dc2626",
               display: "flex",
               alignItems: "center",
               gap: "4px",
@@ -86,7 +87,6 @@ export default function CreatorCard({ creator, onInvite }) {
             title={creator.platform}
           >
             {isInstagram ? <Instagram size={14} /> : <Youtube size={14} />}
-            <span style={{ display: "none" }}>{creator.platform}</span>
           </div>
         </div>
 
@@ -94,7 +94,7 @@ export default function CreatorCard({ creator, onInvite }) {
         <p
           style={{
             fontSize: "13px",
-            color: "var(--ink-soft)",
+            color: "var(--mu)",
             lineHeight: 1.5,
             marginBottom: "16px",
             display: "-webkit-box",
@@ -113,12 +113,12 @@ export default function CreatorCard({ creator, onInvite }) {
               display: "flex",
               alignItems: "center",
               gap: "4px",
-              fontSize: "11px",
-              color: "var(--slate)",
+              fontSize: "12px",
+              color: "var(--mu)",
               marginBottom: "14px",
             }}
           >
-            <MapPin size={12} />
+            <MapPin size={12} color="var(--or)" />
             <span>{creator.city}</span>
           </div>
         )}
@@ -130,18 +130,18 @@ export default function CreatorCard({ creator, onInvite }) {
             gridTemplateColumns: "repeat(3, 1fr)",
             gap: "8px",
             padding: "12px 0",
-            borderTop: "1px solid var(--line)",
-            borderBottom: "1px solid var(--line)",
+            borderTop: "1px solid var(--ln)",
+            borderBottom: "1px solid var(--ln)",
             marginBottom: "16px",
           }}
         >
           <div>
-            <div style={{ fontSize: "11px", color: "var(--slate)", fontWeight: 500, marginBottom: "2px" }}>
+            <div style={{ fontSize: "11px", color: "var(--mu)", fontWeight: 500, marginBottom: "2px" }}>
               Audience
             </div>
             <div
               style={{
-                fontSize: "14px",
+                fontSize: "15px",
                 fontWeight: 700,
                 fontFamily: "var(--font-mono)",
                 color: "var(--ink)",
@@ -151,27 +151,27 @@ export default function CreatorCard({ creator, onInvite }) {
             </div>
           </div>
           <div>
-            <div style={{ fontSize: "11px", color: "var(--slate)", fontWeight: 500, marginBottom: "2px" }}>
+            <div style={{ fontSize: "11px", color: "var(--mu)", fontWeight: 500, marginBottom: "2px" }}>
               Engagement
             </div>
             <div
               style={{
-                fontSize: "14px",
+                fontSize: "15px",
                 fontWeight: 700,
                 fontFamily: "var(--font-mono)",
-                color: "var(--green)",
+                color: "var(--ok)",
               }}
             >
               {creator.engagement}%
             </div>
           </div>
           <div>
-            <div style={{ fontSize: "11px", color: "var(--slate)", fontWeight: 500, marginBottom: "2px" }}>
+            <div style={{ fontSize: "11px", color: "var(--mu)", fontWeight: 500, marginBottom: "2px" }}>
               Rate / Post
             </div>
             <div
               style={{
-                fontSize: "13px",
+                fontSize: "14px",
                 fontWeight: 700,
                 fontFamily: "var(--font-mono)",
                 color: "var(--ink)",
@@ -189,10 +189,11 @@ export default function CreatorCard({ creator, onInvite }) {
           style={{
             fontSize: "11px",
             fontWeight: 600,
-            padding: "3px 8px",
-            borderRadius: "6px",
-            backgroundColor: "var(--paper-warm)",
-            color: "var(--ink-soft)",
+            padding: "4px 10px",
+            borderRadius: "99px",
+            backgroundColor: "var(--alt)",
+            color: "var(--ink)",
+            border: "1px solid var(--ln)",
           }}
         >
           {creator.niche}
@@ -200,16 +201,12 @@ export default function CreatorCard({ creator, onInvite }) {
 
         <button
           onClick={() => onInvite(creator)}
+          className="b d"
           style={{
             fontSize: "12px",
             fontWeight: 600,
-            padding: "6px 14px",
-            borderRadius: "8px",
-            backgroundColor: "var(--ink)",
-            color: "var(--paper)",
-            display: "flex",
-            alignItems: "center",
-            gap: "5px",
+            padding: "7px 16px",
+            borderRadius: "10px",
           }}
         >
           <Send size={12} />

@@ -10,7 +10,7 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
   return (
     <div className="ticket-card">
       {/* Main Ticket Information */}
-      <div style={{ flex: 1, padding: "22px 24px", minWidth: 0 }}>
+      <div style={{ flex: 1, padding: "20px 24px", minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
           <span
             style={{
@@ -19,7 +19,7 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
               fontWeight: 600,
               textTransform: "uppercase",
               letterSpacing: "0.06em",
-              color: "var(--slate)",
+              color: "var(--mu)",
             }}
           >
             {brandName}
@@ -30,25 +30,25 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
               alignItems: "center",
               gap: "3px",
               fontSize: "10px",
-              backgroundColor: "var(--paper-warm)",
-              color: "var(--ink-soft)",
-              padding: "2px 6px",
-              borderRadius: "4px",
+              backgroundColor: "var(--orb)",
+              color: "var(--or)",
+              padding: "2px 7px",
+              borderRadius: "6px",
               fontWeight: 600,
             }}
           >
-            <Sparkles size={10} color="var(--gold)" />
+            <Sparkles size={10} color="var(--or)" />
             Verified Brief
           </span>
         </div>
 
         <h3
           style={{
-            fontSize: "18px",
+            fontSize: "19px",
             fontWeight: 700,
             color: "var(--ink)",
             fontFamily: "var(--font-heading)",
-            lineHeight: 1.3,
+            lineHeight: 1.25,
             marginBottom: "12px",
           }}
         >
@@ -59,12 +59,12 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
           <span
             style={{
               fontSize: "12px",
-              padding: "4px 9px",
-              borderRadius: "6px",
+              padding: "4px 10px",
+              borderRadius: "8px",
               fontWeight: 500,
-              backgroundColor: "var(--paper)",
-              color: "var(--ink-soft)",
-              border: "1px solid var(--line)",
+              backgroundColor: "var(--alt)",
+              color: "var(--ink)",
+              border: "1px solid var(--ln)",
             }}
           >
             {offer.niche}
@@ -72,12 +72,12 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
           <span
             style={{
               fontSize: "12px",
-              padding: "4px 9px",
-              borderRadius: "6px",
+              padding: "4px 10px",
+              borderRadius: "8px",
               fontWeight: 500,
-              backgroundColor: "var(--paper)",
-              color: "var(--ink-soft)",
-              border: "1px solid var(--line)",
+              backgroundColor: "var(--alt)",
+              color: "var(--mu)",
+              border: "1px solid var(--ln)",
             }}
           >
             {offer.deliverables}
@@ -90,7 +90,7 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
             alignItems: "center",
             gap: "6px",
             fontSize: "12px",
-            color: "var(--slate)",
+            color: "var(--mu)",
           }}
         >
           <Calendar size={13} />
@@ -108,7 +108,7 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
             style={{
               fontSize: "11px",
               fontWeight: 600,
-              color: "var(--slate)",
+              color: "var(--mu)",
               textTransform: "uppercase",
               letterSpacing: "0.05em",
               marginBottom: "3px",
@@ -118,7 +118,7 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
           </div>
           <div
             style={{
-              fontSize: "16px",
+              fontSize: "17px",
               fontWeight: 700,
               fontFamily: "var(--font-mono)",
               color: "var(--ink)",
@@ -131,7 +131,7 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
             style={{
               fontSize: "12px",
               fontFamily: "var(--font-mono)",
-              color: "var(--slate)",
+              color: "var(--mu)",
               marginTop: "1px",
             }}
           >
@@ -148,19 +148,17 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
         ) : (
           <button
             onClick={onApply}
+            className="b or"
             style={{
               width: "100%",
-              padding: "8px 12px",
+              padding: "8px 14px",
               borderRadius: "10px",
               fontSize: "13px",
               fontWeight: 600,
-              backgroundColor: "var(--cobalt)",
-              color: "#FFFFFF",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               gap: "6px",
-              boxShadow: "0 4px 12px rgba(43, 69, 246, 0.2)",
             }}
           >
             <span>Apply</span>

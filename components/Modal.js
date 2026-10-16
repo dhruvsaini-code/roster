@@ -15,10 +15,10 @@ export default function Modal({ title, subtitle, onClose, children }) {
       style={{
         position: "fixed",
         inset: 0,
-        zIndex: 100,
-        backgroundColor: "rgba(18, 20, 29, 0.55)",
-        backdropFilter: "blur(6px)",
-        WebkitBackdropFilter: "blur(6px)",
+        zIndex: 120,
+        backgroundColor: "rgba(10, 10, 14, 0.65)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -32,14 +32,14 @@ export default function Modal({ title, subtitle, onClose, children }) {
         className="animate-slide-down"
         style={{
           backgroundColor: "var(--card)",
-          border: "1px solid var(--line-strong)",
-          borderRadius: "20px",
+          border: "1px solid var(--ln)",
+          borderRadius: "24px",
           width: "100%",
           maxWidth: "480px",
-          padding: "24px 28px",
+          padding: "26px 28px",
           maxHeight: "88vh",
           overflowY: "auto",
-          boxShadow: "0 25px 50px -12px rgba(18, 20, 29, 0.25)",
+          boxShadow: "var(--sh)",
         }}
       >
         <div
@@ -48,24 +48,24 @@ export default function Modal({ title, subtitle, onClose, children }) {
             alignItems: "flex-start",
             justifyContent: "space-between",
             marginBottom: "18px",
-            borderBottom: "1px solid var(--line)",
+            borderBottom: "1px solid var(--ln)",
             paddingBottom: "14px",
           }}
         >
           <div>
             <h3
               style={{
-                fontSize: "18px",
+                fontSize: "20px",
                 fontWeight: 700,
                 fontFamily: "var(--font-heading)",
                 color: "var(--ink)",
-                lineHeight: 1.3,
+                lineHeight: 1.25,
               }}
             >
               {title}
             </h3>
             {subtitle && (
-              <p style={{ fontSize: "12px", color: "var(--slate)", marginTop: "2px" }}>
+              <p style={{ fontSize: "13px", color: "var(--mu)", marginTop: "4px" }}>
                 {subtitle}
               </p>
             )}
@@ -76,11 +76,11 @@ export default function Modal({ title, subtitle, onClose, children }) {
             style={{
               padding: "6px",
               borderRadius: "50%",
-              color: "var(--slate)",
+              color: "var(--mu)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: "var(--paper)",
+              backgroundColor: "var(--alt)",
             }}
             title="Close modal"
           >

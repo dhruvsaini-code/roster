@@ -19,30 +19,31 @@ export default function Toast({ message, type = "success", onClose }) {
         bottom: "24px",
         right: "24px",
         zIndex: 200,
-        backgroundColor: "var(--ink)",
-        color: "#FFFFFF",
+        backgroundColor: "var(--btn)",
+        color: "var(--btnt)",
         padding: "12px 18px",
-        borderRadius: "14px",
+        borderRadius: "16px",
         display: "flex",
         alignItems: "center",
         gap: "10px",
-        boxShadow: "0 14px 28px rgba(18, 20, 29, 0.28)",
+        boxShadow: "0 14px 28px rgba(0, 0, 0, 0.28)",
         fontSize: "13px",
         fontWeight: 500,
         maxWidth: "90vw",
+        border: "1px solid var(--ln)",
       }}
     >
       {isSuccess ? (
-        <CheckCircle2 size={16} color="var(--green)" />
+        <CheckCircle2 size={16} color="var(--ok)" />
       ) : (
-        <Info size={16} color="var(--cobalt)" />
+        <Info size={16} color="var(--or)" />
       )}
       <span>{message}</span>
       <button
         onClick={onClose}
         style={{
           marginLeft: "8px",
-          color: "var(--slate)",
+          color: "var(--mu)",
           display: "flex",
           alignItems: "center",
         }}
