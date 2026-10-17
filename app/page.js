@@ -23,9 +23,23 @@ import HeroSection from "@/components/HeroSection";
 import ToolSprawl from "@/components/ToolSprawl";
 import FeatureStage from "@/components/FeatureStage";
 import WorkflowSection from "@/components/WorkflowSection";
+import RoiCalculator from "@/components/RoiCalculator";
+import ComparisonTable from "@/components/ComparisonTable";
 import TestimonialMarquee from "@/components/TestimonialMarquee";
 import { Instagram, Youtube } from "@/components/Icons";
 import { NICHES, CREATORS, INITIAL_OFFERS, INITIAL_APPLICATIONS } from "@/lib/seedData";
+
+const NICHE_EMOJIS = {
+  Fashion: "👗",
+  Fitness: "🏋️",
+  Food: "🍳",
+  Tech: "💻",
+  Travel: "✈️",
+  Beauty: "✨",
+  Gaming: "🎮",
+  Finance: "📈",
+  Comedy: "🎭",
+};
 
 const CURRENT_CREATOR_ID = "inf-1"; // Aanya Kapoor
 
@@ -253,6 +267,12 @@ export default function Home() {
 
       {/* 5-Step Connected Workflow */}
       <WorkflowSection />
+
+      {/* Interactive Campaign ROI Estimator */}
+      <RoiCalculator />
+
+      {/* Modern Advantage Comparison Matrix */}
+      <ComparisonTable />
 
       {/* ============================================================== */}
       {/* THE LIVE PLATFORM APP WORKSPACE                                */}
@@ -529,9 +549,11 @@ export default function Home() {
                           backgroundColor: selectedNiche === "All" ? "var(--btn)" : "var(--alt)",
                           color: selectedNiche === "All" ? "var(--btnt)" : "var(--mu)",
                           border: "1px solid var(--ln)",
+                          cursor: "pointer",
+                          transition: "all 0.15s ease",
                         }}
                       >
-                        All
+                        ⚡ All
                       </button>
                       {NICHES.map((n) => (
                         <button
@@ -541,13 +563,19 @@ export default function Home() {
                             padding: "5px 14px",
                             borderRadius: "99px",
                             fontSize: "13px",
-                            fontWeight: 500,
+                            fontWeight: selectedNiche === n ? 600 : 500,
                             backgroundColor: selectedNiche === n ? "var(--btn)" : "var(--alt)",
                             color: selectedNiche === n ? "var(--btnt)" : "var(--mu)",
                             border: "1px solid var(--ln)",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "5px",
+                            cursor: "pointer",
+                            transition: "all 0.15s ease",
                           }}
                         >
-                          {n}
+                          <span>{NICHE_EMOJIS[n] || "🏷️"}</span>
+                          <span>{n}</span>
                         </button>
                       ))}
                     </div>
@@ -929,9 +957,11 @@ export default function Home() {
                           backgroundColor: selectedNiche === "All" ? "var(--btn)" : "var(--alt)",
                           color: selectedNiche === "All" ? "var(--btnt)" : "var(--mu)",
                           border: "1px solid var(--ln)",
+                          cursor: "pointer",
+                          transition: "all 0.15s ease",
                         }}
                       >
-                        All
+                        ⚡ All
                       </button>
                       {NICHES.map((n) => (
                         <button
@@ -941,13 +971,19 @@ export default function Home() {
                             padding: "5px 14px",
                             borderRadius: "99px",
                             fontSize: "13px",
-                            fontWeight: 500,
+                            fontWeight: selectedNiche === n ? 600 : 500,
                             backgroundColor: selectedNiche === n ? "var(--btn)" : "var(--alt)",
                             color: selectedNiche === n ? "var(--btnt)" : "var(--mu)",
                             border: "1px solid var(--ln)",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "5px",
+                            cursor: "pointer",
+                            transition: "all 0.15s ease",
                           }}
                         >
-                          {n}
+                          <span>{NICHE_EMOJIS[n] || "🏷️"}</span>
+                          <span>{n}</span>
                         </button>
                       ))}
                     </div>

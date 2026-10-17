@@ -70,6 +70,14 @@ export default function Navbar({ theme, onToggleTheme, onSelectRole, onSelectNic
           </div>
 
           <div className="wb-mi">
+            <a href="#calculator">ROI Calculator</a>
+          </div>
+
+          <div className="wb-mi">
+            <a href="#comparison">Why Roster</a>
+          </div>
+
+          <div className="wb-mi">
             <a href="#integrations">Integrations</a>
           </div>
         </nav>
