@@ -1,4 +1,4 @@
-import { Calendar, Sparkles, ArrowRight } from "lucide-react";
+import { Calendar, Sparkles, ArrowRight, Video, Flame } from "lucide-react";
 import StatusBadge from "./StatusBadge";
 
 export const formatMoney = (n) =>
@@ -6,45 +6,59 @@ export const formatMoney = (n) =>
 
 export default function DealCard({ offer, appliedStatus, onApply, isBrandView, rightContent }) {
   const brandName = offer.brand || offer.brandProfile?.companyName || "Verified Brand";
+  const dealRef = `REF: #DL-${(offer.id || "1").slice(-4).toUpperCase()}`;
 
   return (
     <div className="ticket-card">
       {/* Main Ticket Information */}
-      <div style={{ flex: 1, padding: "20px 24px", minWidth: 0 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
+      <div style={{ flex: 1, padding: "22px 26px", minWidth: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <span
+              style={{
+                fontSize: "11px",
+                fontFamily: "var(--font-mono)",
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: "0.06em",
+                color: "var(--mu)",
+              }}
+            >
+              {brandName}
+            </span>
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "3px",
+                fontSize: "10px",
+                backgroundColor: "var(--orb)",
+                color: "var(--or)",
+                padding: "2px 7px",
+                borderRadius: "6px",
+                fontWeight: 600,
+              }}
+            >
+              <Sparkles size={10} color="var(--or)" />
+              Verified Deal
+            </span>
+          </div>
+
           <span
             style={{
-              fontSize: "11px",
-              fontFamily: "var(--font-mono)",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              letterSpacing: "0.06em",
-              color: "var(--mu)",
-            }}
-          >
-            {brandName}
-          </span>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "3px",
               fontSize: "10px",
-              backgroundColor: "var(--orb)",
-              color: "var(--or)",
-              padding: "2px 7px",
-              borderRadius: "6px",
-              fontWeight: 600,
+              fontFamily: "var(--font-mono)",
+              color: "var(--mu)",
+              letterSpacing: "0.05em",
             }}
           >
-            <Sparkles size={10} color="var(--or)" />
-            Verified Brief
+            {dealRef}
           </span>
         </div>
 
         <h3
           style={{
-            fontSize: "19px",
+            fontSize: "20px",
             fontWeight: 700,
             color: "var(--ink)",
             fontFamily: "var(--font-heading)",
@@ -61,7 +75,7 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
               fontSize: "12px",
               padding: "4px 10px",
               borderRadius: "8px",
-              fontWeight: 500,
+              fontWeight: 600,
               backgroundColor: "var(--alt)",
               color: "var(--ink)",
               border: "1px solid var(--ln)",
@@ -71,6 +85,9 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
           </span>
           <span
             style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "4px",
               fontSize: "12px",
               padding: "4px 10px",
               borderRadius: "8px",
@@ -80,6 +97,7 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
               border: "1px solid var(--ln)",
             }}
           >
+            <Video size={13} color="var(--or)" />
             {offer.deliverables}
           </span>
         </div>
@@ -88,13 +106,19 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "6px",
+            gap: "12px",
             fontSize: "12px",
             color: "var(--mu)",
           }}
         >
-          <Calendar size={13} />
-          <span>{offer.days || 14} days left to apply</span>
+          <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+            <Calendar size={13} />
+            <span>{offer.days || 14} days left to apply</span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "4px", color: "var(--ok)", fontWeight: 500 }}>
+            <Flame size={13} />
+            <span>High response rate</span>
+          </div>
         </div>
       </div>
 
@@ -103,7 +127,7 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
         <div className="ticket-notch-top" />
         <div className="ticket-notch-bottom" />
 
-        <div style={{ textAlign: "center", marginBottom: "14px", width: "100%" }}>
+        <div style={{ textAlign: "center", marginBottom: "12px", width: "100%" }}>
           <div
             style={{
               fontSize: "11px",
@@ -114,7 +138,7 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
               marginBottom: "3px",
             }}
           >
-            Budget Bracket
+            Guaranteed Budget
           </div>
           <div
             style={{
@@ -132,7 +156,7 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
               fontSize: "12px",
               fontFamily: "var(--font-mono)",
               color: "var(--mu)",
-              marginTop: "1px",
+              marginTop: "2px",
             }}
           >
             – {formatMoney(offer.budgetMax)}
@@ -142,7 +166,7 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
         {rightContent ? (
           rightContent
         ) : appliedStatus ? (
-          <div style={{ width: "100%", textAlign: "center" }}>
+          <div style={{ width: "100%", textAlign: "center", marginBottom: "10px" }}>
             <StatusBadge status={appliedStatus} />
           </div>
         ) : (
@@ -159,12 +183,31 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
               alignItems: "center",
               justifyContent: "center",
               gap: "6px",
+              marginBottom: "10px",
             }}
           >
-            <span>Apply</span>
+            <span>Apply Now</span>
             <ArrowRight size={14} />
           </button>
         )}
+
+        {/* Decorative Ticket Barcode */}
+        <div className="ticket-barcode" aria-hidden="true">
+          <span style={{ width: "2px" }} />
+          <span style={{ width: "1px" }} />
+          <span style={{ width: "3px" }} />
+          <span style={{ width: "1px" }} />
+          <span style={{ width: "2px" }} />
+          <span style={{ width: "4px" }} />
+          <span style={{ width: "1px" }} />
+          <span style={{ width: "2px" }} />
+          <span style={{ width: "3px" }} />
+          <span style={{ width: "1px" }} />
+          <span style={{ width: "2px" }} />
+          <span style={{ width: "1px" }} />
+          <span style={{ width: "3px" }} />
+          <span style={{ width: "2px" }} />
+        </div>
       </div>
     </div>
   );

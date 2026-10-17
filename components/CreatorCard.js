@@ -1,4 +1,4 @@
-import { MapPin, CheckCircle, Send } from "lucide-react";
+import { MapPin, CheckCircle, Send, Users, ShieldCheck } from "lucide-react";
 import { Instagram, Youtube } from "./Icons";
 import Avatar from "./Avatar";
 import { formatMoney } from "./DealCard";
@@ -18,13 +18,14 @@ export default function CreatorCard({ creator, onInvite }) {
       style={{
         backgroundColor: "var(--card)",
         border: "1px solid var(--ln)",
-        borderRadius: "20px",
-        padding: "22px",
+        borderRadius: "22px",
+        padding: "24px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         transition: "transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease",
-        boxShadow: "0 4px 16px rgba(0, 0, 0, 0.03)",
+        boxShadow: "0 4px 18px rgba(0, 0, 0, 0.03)",
+        position: "relative",
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = "translateY(-3px)";
@@ -33,19 +34,19 @@ export default function CreatorCard({ creator, onInvite }) {
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "0 4px 16px rgba(0, 0, 0, 0.03)";
+        e.currentTarget.style.boxShadow = "0 4px 18px rgba(0, 0, 0, 0.03)";
         e.currentTarget.style.borderColor = "var(--ln)";
       }}
     >
       <div>
         {/* Header with avatar, handle and verified platform */}
         <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "14px" }}>
-          <Avatar name={creator.name} size={46} />
+          <Avatar name={creator.name} size={48} />
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
               <h3
                 style={{
-                  fontSize: "17px",
+                  fontSize: "18px",
                   fontWeight: 700,
                   fontFamily: "var(--font-heading)",
                   color: "var(--ink)",
@@ -56,7 +57,7 @@ export default function CreatorCard({ creator, onInvite }) {
               >
                 {creator.name}
               </h3>
-              <CheckCircle size={14} color="var(--ok)" />
+              <CheckCircle size={15} color="var(--ok)" />
             </div>
             <p
               style={{
@@ -74,19 +75,20 @@ export default function CreatorCard({ creator, onInvite }) {
 
           <div
             style={{
-              padding: "6px 9px",
-              borderRadius: "8px",
+              padding: "6px 10px",
+              borderRadius: "10px",
               backgroundColor: isInstagram ? "rgba(219, 39, 119, 0.1)" : "rgba(220, 38, 38, 0.1)",
               color: isInstagram ? "#db2777" : "#dc2626",
               display: "flex",
               alignItems: "center",
-              gap: "4px",
+              gap: "5px",
               fontSize: "11px",
-              fontWeight: 600,
+              fontWeight: 700,
             }}
             title={creator.platform}
           >
             {isInstagram ? <Instagram size={14} /> : <Youtube size={14} />}
+            <span>{creator.platform}</span>
           </div>
         </div>
 
@@ -95,8 +97,8 @@ export default function CreatorCard({ creator, onInvite }) {
           style={{
             fontSize: "13px",
             color: "var(--mu)",
-            lineHeight: 1.5,
-            marginBottom: "16px",
+            lineHeight: 1.55,
+            marginBottom: "14px",
             display: "-webkit-box",
             WebkitLineClamp: 2,
             WebkitBoxOrient: "vertical",
@@ -106,22 +108,47 @@ export default function CreatorCard({ creator, onInvite }) {
           {creator.bio}
         </p>
 
-        {/* City tag if available */}
-        {creator.city && (
-          <div
+        {/* City and Audience Breakdown */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            fontSize: "11px",
+            color: "var(--mu)",
+            marginBottom: "14px",
+            flexWrap: "wrap",
+          }}
+        >
+          {creator.city && (
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
+                backgroundColor: "var(--alt)",
+                padding: "2px 8px",
+                borderRadius: "6px",
+              }}
+            >
+              <MapPin size={11} color="var(--or)" />
+              {creator.city}
+            </span>
+          )}
+          <span
             style={{
-              display: "flex",
+              display: "inline-flex",
               alignItems: "center",
               gap: "4px",
-              fontSize: "12px",
-              color: "var(--mu)",
-              marginBottom: "14px",
+              backgroundColor: "var(--alt)",
+              padding: "2px 8px",
+              borderRadius: "6px",
             }}
           >
-            <MapPin size={12} color="var(--or)" />
-            <span>{creator.city}</span>
-          </div>
-        )}
+            <Users size={11} color="var(--ok)" />
+            84% India Audience
+          </span>
+        </div>
 
         {/* Key Metrics Grid */}
         <div
@@ -205,7 +232,7 @@ export default function CreatorCard({ creator, onInvite }) {
           style={{
             fontSize: "12px",
             fontWeight: 600,
-            padding: "7px 16px",
+            padding: "8px 18px",
             borderRadius: "10px",
           }}
         >
