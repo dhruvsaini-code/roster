@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Sparkles, ArrowRight, ShieldCheck } from "lucide-react";
 
 const HERO_WORDS = [
   { emoji: "📝", text: "Briefs." },
@@ -26,8 +27,18 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="wb-hero">
-      <div className="w">
+    <section className="wb-hero" style={{ position: "relative" }}>
+      {/* Ambient Backdrop Glow */}
+      <div className="ambient-glow" />
+
+      <div className="w" style={{ position: "relative", zIndex: 1 }}>
+        {/* Announcement Banner Pill */}
+        <a href="#app-workspace" className="announcement-pill">
+          <span className="announcement-badge">New</span>
+          <span>Roster 2.0: Automated Pitch Pipelines & YouTube API Sync</span>
+          <ArrowRight size={13} color="var(--or)" />
+        </a>
+
         <h1>
           Built for{" "}
           <span className="wb-em">
@@ -46,24 +57,39 @@ export default function HeroSection() {
 
         <div className="wb-cta">
           <a className="b d" href="#app-workspace">
-            Explore Live Deal Board
+            <span>Explore Live Deal Board</span>
+            <ArrowRight size={15} />
           </a>
-          <a className="b" href="#features">
-            Take A Tour
+          <a className="b" href="#calculator">
+            <span>Calculate Campaign ROI</span>
           </a>
         </div>
 
         {/* Stacked Dashboards Mockup */}
         <div className="wb-stack">
+          {/* Top Layer */}
           <div className="wb-ly wb-l1">
-            <span>Creators</span>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div className="mac-dots">
+                <span className="mac-dot mac-red" />
+                <span className="mac-dot mac-yellow" />
+                <span className="mac-dot mac-green" />
+              </div>
+              <span style={{ marginLeft: "4px" }}>Creators Directory</span>
+            </div>
             <small>Find and compare 2,400+ verified creators</small>
           </div>
+
+          {/* Middle Layer */}
           <div className="wb-ly wb-l2">
-            <span>Good morning, Nuvo Audio</span>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--ok)", boxShadow: "0 0 8px var(--ok)" }} />
+              <span>Good morning, Nuvo Audio</span>
+            </div>
             <small>Current streak: 12 successful creator hires</small>
           </div>
 
+          {/* Main Showcase Frame */}
           <div className="wb-fr">
             {/* Left Sidebar */}
             <div className="wb-sd">
@@ -94,7 +120,12 @@ export default function HeroSection() {
             {/* Main Pane */}
             <div className="wb-mn">
               <div className="wb-tp">
-                Briefs
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <span>Briefs</span>
+                  <span style={{ fontSize: "11px", backgroundColor: "var(--ok-bg)", color: "var(--ok)", padding: "2px 8px", borderRadius: "99px", fontWeight: 600 }}>
+                    ● Live Pipeline
+                  </span>
+                </div>
                 <span>👩‍🎤 🧑‍💻 👩‍💼 &nbsp; Active Campaigns</span>
               </div>
 
