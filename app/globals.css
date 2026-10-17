@@ -1198,6 +1198,152 @@ footer.wb-footer a:hover {
   animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Ambient Backdrop Glow */
+.ambient-glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1000px;
+  height: 520px;
+  background: radial-gradient(circle at 50% 25%, rgba(192, 108, 245, 0.16) 0%, rgba(255, 79, 163, 0.1) 35%, rgba(111, 182, 255, 0.08) 60%, transparent 75%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* macOS Window Header Controls */
+.mac-dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.mac-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.mac-red { background: #ff5f56; }
+.mac-yellow { background: #ffbd2e; }
+.mac-green { background: #27c93f; }
+
+/* Announcement Pill */
+.announcement-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--ln);
+  background: var(--card-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  margin-bottom: 24px;
+  transition: all 0.2s ease;
+}
+
+.announcement-pill:hover {
+  border-color: var(--or);
+  transform: translateY(-1px);
+}
+
+.announcement-badge {
+  background: var(--g);
+  color: #ffffff;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Ticket Barcode Pattern */
+.ticket-barcode {
+  display: flex;
+  gap: 2px;
+  height: 24px;
+  opacity: 0.45;
+  align-items: flex-end;
+}
+
+.ticket-barcode span {
+  display: block;
+  background: var(--ink);
+  height: 100%;
+}
+
+/* Custom Interactive Range Slider */
+.wb-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 99px;
+  background: var(--ln);
+  outline: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.wb-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--or);
+  border: 3px solid var(--card);
+  box-shadow: 0 4px 12px rgba(240, 86, 29, 0.4);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.wb-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+/* Comparison Table */
+.wb-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--ln);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--card);
+}
+
+.wb-table th, .wb-table td {
+  padding: 16px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--ln);
+  font-size: 14px;
+}
+
+.wb-table th {
+  background: var(--alt);
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--mu);
+}
+
+.wb-table tr:last-child td {
+  border-bottom: none;
+}
+
+.wb-table td.highlight {
+  background: rgba(240, 86, 29, 0.04);
+  font-weight: 600;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .wb-tr, .wb-band div { animation: none !important; }
   .wb-rot { transition: none !important; }
