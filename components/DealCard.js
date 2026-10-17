@@ -1,10 +1,18 @@
-import { Calendar, Sparkles, ArrowRight, Video, Flame } from "lucide-react";
+import { Calendar, Sparkles, ArrowRight, Video, Flame, ShieldCheck, MessageSquare } from "lucide-react";
 import StatusBadge from "./StatusBadge";
 
 export const formatMoney = (n) =>
   `₹${Number(n || 0).toLocaleString("en-IN")}`;
 
-export default function DealCard({ offer, appliedStatus, onApply, isBrandView, rightContent }) {
+export default function DealCard({
+  offer,
+  appliedStatus,
+  onApply,
+  onViewEscrow,
+  onOpenChat,
+  isBrandView,
+  rightContent,
+}) {
   const brandName = offer.brand || offer.brandProfile?.companyName || "Verified Brand";
   const dealRef = `REF: #DL-${(offer.id || "1").slice(-4).toUpperCase()}`;
 
@@ -166,29 +174,101 @@ export default function DealCard({ offer, appliedStatus, onApply, isBrandView, r
         {rightContent ? (
           rightContent
         ) : appliedStatus ? (
-          <div style={{ width: "100%", textAlign: "center", marginBottom: "10px" }}>
-            <StatusBadge status={appliedStatus} />
+          <div style={{ width: "100%", marginBottom: "10px", display: "flex", flexDirection: "column", gap: "8px" }}>
+            <div style={{ textAlign: "center" }}>
+              <StatusBadge status={appliedStatus} />
+            </div>
+            <div style={{ display: "flex", gap: "6px", width: "100%" }}>
+              {onViewEscrow && (
+                <button
+                  onClick={onViewEscrow}
+                  style={{
+                    flex: 1,
+                    fontSize: "11px",
+                    fontWeight: 600,
+                    padding: "6px 8px",
+                    borderRadius: "8px",
+                    backgroundColor: "var(--alt)",
+                    border: "1px solid var(--ln)",
+                    color: "var(--ink)",
+                    cursor: "pointer",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "4px",
+                  }}
+                  title="View Milestone Escrow Tracker"
+                >
+                  <ShieldCheck size={12} color="var(--or)" />
+                  <span>Escrow</span>
+                </button>
+              )}
+              {onOpenChat && (
+                <button
+                  onClick={onOpenChat}
+                  style={{
+                    flex: 1,
+                    fontSize: "11px",
+                    fontWeight: 600,
+                    padding: "6px 8px",
+                    borderRadius: "8px",
+                    backgroundColor: "var(--alt)",
+                    border: "1px solid var(--ln)",
+                    color: "var(--ink)",
+                    cursor: "pointer",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "4px",
+                  }}
+                  title="Chat with Brand"
+                >
+                  <MessageSquare size={12} color="var(--or)" />
+                  <span>Chat</span>
+                </button>
+              )}
+            </div>
           </div>
         ) : (
-          <button
-            onClick={onApply}
-            className="b or"
-            style={{
-              width: "100%",
-              padding: "8px 14px",
-              borderRadius: "10px",
-              fontSize: "13px",
-              fontWeight: 600,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "6px",
-              marginBottom: "10px",
-            }}
-          >
-            <span>Apply Now</span>
-            <ArrowRight size={14} />
-          </button>
+          <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "6px", marginBottom: "10px" }}>
+            <button
+              onClick={onApply}
+              className="b or"
+              style={{
+                width: "100%",
+                padding: "8px 14px",
+                borderRadius: "10px",
+                fontSize: "13px",
+                fontWeight: 600,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "6px",
+              }}
+            >
+              <span>Apply Now</span>
+              <ArrowRight size={14} />
+            </button>
+            {onViewEscrow && (
+              <button
+                onClick={onViewEscrow}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--mu)",
+                  fontSize: "11px",
+                  cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "3px",
+                }}
+              >
+                <ShieldCheck size={11} color="var(--or)" />
+                <span>Escrow Protected</span>
+              </button>
+            )}
+          </div>
         )}
 
         {/* Decorative Ticket Barcode */}

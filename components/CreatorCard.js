@@ -1,4 +1,4 @@
-import { MapPin, CheckCircle, Send, Users, ShieldCheck } from "lucide-react";
+import { MapPin, CheckCircle, Send, Users, ShieldCheck, FileText } from "lucide-react";
 import { Instagram, Youtube } from "./Icons";
 import Avatar from "./Avatar";
 import { formatMoney } from "./DealCard";
@@ -10,7 +10,7 @@ export const formatFollowers = (n) => {
   return n.toString();
 };
 
-export default function CreatorCard({ creator, onInvite }) {
+export default function CreatorCard({ creator, onInvite, onViewMediaKit }) {
   const isInstagram = creator.platform?.toLowerCase() === "instagram";
 
   return (
@@ -210,8 +210,8 @@ export default function CreatorCard({ creator, onInvite }) {
         </div>
       </div>
 
-      {/* Footer with Niche & Invite action */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      {/* Footer with Niche & Actions */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
         <span
           style={{
             fontSize: "11px",
@@ -226,19 +226,45 @@ export default function CreatorCard({ creator, onInvite }) {
           {creator.niche}
         </span>
 
-        <button
-          onClick={() => onInvite(creator)}
-          className="b d"
-          style={{
-            fontSize: "12px",
-            fontWeight: 600,
-            padding: "8px 18px",
-            borderRadius: "10px",
-          }}
-        >
-          <Send size={12} />
-          <span>Invite</span>
-        </button>
+        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+          {onViewMediaKit && (
+            <button
+              onClick={() => onViewMediaKit(creator)}
+              style={{
+                fontSize: "12px",
+                fontWeight: 600,
+                padding: "8px 12px",
+                borderRadius: "10px",
+                backgroundColor: "var(--alt)",
+                color: "var(--ink)",
+                border: "1px solid var(--ln)",
+                cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
+                transition: "background-color 0.15s ease",
+              }}
+              title="View Creator Media Kit & Rate Card"
+            >
+              <FileText size={13} color="var(--or)" />
+              <span>Media Kit</span>
+            </button>
+          )}
+
+          <button
+            onClick={() => onInvite(creator)}
+            className="b d"
+            style={{
+              fontSize: "12px",
+              fontWeight: 600,
+              padding: "8px 18px",
+              borderRadius: "10px",
+            }}
+          >
+            <Send size={12} />
+            <span>Invite</span>
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -11,6 +11,8 @@ import {
   CheckCircle2,
   XCircle,
   ShieldCheck,
+  MessageSquare,
+  FileText,
 } from "lucide-react";
 import Avatar from "@/components/Avatar";
 import StatusBadge from "@/components/StatusBadge";
@@ -25,6 +27,9 @@ import FeatureStage from "@/components/FeatureStage";
 import WorkflowSection from "@/components/WorkflowSection";
 import RoiCalculator from "@/components/RoiCalculator";
 import ComparisonTable from "@/components/ComparisonTable";
+import EscrowTracker from "@/components/EscrowTracker";
+import DealChatModal from "@/components/DealChatModal";
+import MediaKitModal from "@/components/MediaKitModal";
 import TestimonialMarquee from "@/components/TestimonialMarquee";
 import { Instagram, Youtube } from "@/components/Icons";
 import { NICHES, CREATORS, INITIAL_OFFERS, INITIAL_APPLICATIONS } from "@/lib/seedData";
@@ -90,6 +95,11 @@ export default function Home() {
   const [ncMin, setNcMin] = useState("");
   const [ncMax, setNcMax] = useState("");
   const [ncDeliverables, setNcDeliverables] = useState("");
+
+  // Additional Interactive Modal States
+  const [escrowModalDeal, setEscrowModalDeal] = useState(null);
+  const [chatModalDeal, setChatModalDeal] = useState(null);
+  const [mediaKitModalCreator, setMediaKitModalCreator] = useState(null);
 
   // Feedback Toast
   const [toast, setToast] = useState(null);
@@ -594,6 +604,7 @@ export default function Home() {
                         key={creator.id}
                         creator={creator}
                         onInvite={(c) => setInviteModalCreator(c)}
+                        onViewMediaKit={(c) => setMediaKitModalCreator(c)}
                       />
                     ))}
                   </div>
@@ -770,8 +781,37 @@ export default function Home() {
                                       </div>
                                     )}
 
-                                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                    <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
                                       <StatusBadge status={app.status} />
+
+                                      {/* Quick Chat Button */}
+                                      <button
+                                        onClick={() => {
+                                          const applicantCreator = creators.find((c) => c.id === app.influencerId);
+                                          setChatModalDeal({
+                                            title: offer.title,
+                                            rate: app.rate,
+                                            partnerName: applicantCreator?.name || "Applicant Creator",
+                                          });
+                                        }}
+                                        style={{
+                                          padding: "6px 10px",
+                                          borderRadius: "8px",
+                                          backgroundColor: "var(--alt)",
+                                          border: "1px solid var(--ln)",
+                                          color: "var(--ink)",
+                                          fontSize: "12px",
+                                          fontWeight: 600,
+                                          cursor: "pointer",
+                                          display: "inline-flex",
+                                          alignItems: "center",
+                                          gap: "4px",
+                                        }}
+                                        title="Chat with creator"
+                                      >
+                                        <MessageSquare size={13} color="var(--or)" />
+                                        <span>Chat</span>
+                                      </button>
 
                                       {(app.status === "Applied" || app.status === "Invited") && (
                                         <div style={{ display: "flex", gap: "6px" }}>
@@ -787,6 +827,7 @@ export default function Home() {
                                               display: "flex",
                                               alignItems: "center",
                                               gap: "4px",
+                                              cursor: "pointer",
                                             }}
                                             title="Shortlist applicant"
                                           >
@@ -803,6 +844,7 @@ export default function Home() {
                                               fontSize: "12px",
                                               display: "flex",
                                               alignItems: "center",
+                                              cursor: "pointer",
                                             }}
                                             title="Decline applicant"
                                           >
@@ -826,10 +868,34 @@ export default function Home() {
                                             display: "flex",
                                             alignItems: "center",
                                             gap: "4px",
+                                            cursor: "pointer",
                                           }}
                                         >
                                           <CheckCircle2 size={13} />
                                           <span>Hire Creator</span>
+                                        </button>
+                                      )}
+
+                                      {app.status === "Hired" && (
+                                        <button
+                                          onClick={() => setEscrowModalDeal({ ...offer, rate: app.rate })}
+                                          style={{
+                                            padding: "6px 12px",
+                                            borderRadius: "8px",
+                                            backgroundColor: "var(--orb)",
+                                            border: "1px solid var(--or)",
+                                            color: "var(--or)",
+                                            fontSize: "12px",
+                                            fontWeight: 600,
+                                            cursor: "pointer",
+                                            display: "inline-flex",
+                                            alignItems: "center",
+                                            gap: "4px",
+                                          }}
+                                          title="View Escrow Milestone Contract"
+                                        >
+                                          <ShieldCheck size={13} />
+                                          <span>Escrow</span>
                                         </button>
                                       )}
                                     </div>
@@ -1002,6 +1068,13 @@ export default function Home() {
                           offer={offer}
                           appliedStatus={myApp?.status}
                           onApply={() => setApplyModalOffer(offer)}
+                          onViewEscrow={() => setEscrowModalDeal(offer)}
+                          onOpenChat={() =>
+                            setChatModalDeal({
+                              ...offer,
+                              partnerName: offer.brand || "Brand Partner",
+                            })
+                          }
                         />
                       );
                     })}
@@ -1107,8 +1180,56 @@ export default function Home() {
                             </div>
                           </div>
 
-                          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
                             <StatusBadge status={app.status} />
+
+                            <button
+                              onClick={() => setEscrowModalDeal({ ...offer, rate: app.rate })}
+                              style={{
+                                padding: "6px 12px",
+                                borderRadius: "8px",
+                                backgroundColor: "var(--alt)",
+                                border: "1px solid var(--ln)",
+                                color: "var(--ink)",
+                                fontSize: "12px",
+                                fontWeight: 600,
+                                cursor: "pointer",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "4px",
+                              }}
+                              title="View Escrow Milestones"
+                            >
+                              <ShieldCheck size={13} color="var(--or)" />
+                              <span>Escrow</span>
+                            </button>
+
+                            <button
+                              onClick={() =>
+                                setChatModalDeal({
+                                  title: offer.title,
+                                  rate: app.rate,
+                                  partnerName: offer.brand || "Brand Partner",
+                                })
+                              }
+                              style={{
+                                padding: "6px 12px",
+                                borderRadius: "8px",
+                                backgroundColor: "var(--alt)",
+                                border: "1px solid var(--ln)",
+                                color: "var(--ink)",
+                                fontSize: "12px",
+                                fontWeight: 600,
+                                cursor: "pointer",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "4px",
+                              }}
+                              title="Open Deal Messenger"
+                            >
+                              <MessageSquare size={13} color="var(--or)" />
+                              <span>Chat</span>
+                            </button>
                           </div>
                         </div>
                       );
@@ -1129,26 +1250,48 @@ export default function Home() {
                     margin: "0 auto",
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: "24px" }}>
-                    <Avatar name="Aanya Kapoor" size={72} />
-                    <div>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                        <h3
-                          style={{
-                            fontSize: "24px",
-                            fontWeight: 700,
-                            fontFamily: "var(--font-heading)",
-                            color: "var(--ink)",
-                          }}
-                        >
-                          Aanya Kapoor
-                        </h3>
-                        <ShieldCheck size={20} color="var(--ok)" />
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px", marginBottom: "24px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+                      <Avatar name="Aanya Kapoor" size={72} />
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                          <h3
+                            style={{
+                              fontSize: "24px",
+                              fontWeight: 700,
+                              fontFamily: "var(--font-heading)",
+                              color: "var(--ink)",
+                            }}
+                          >
+                            Aanya Kapoor
+                          </h3>
+                          <ShieldCheck size={20} color="var(--ok)" />
+                        </div>
+                        <p style={{ fontSize: "14px", color: "var(--mu)", fontFamily: "var(--font-mono)", marginTop: "2px" }}>
+                          @aanya.styles · Fashion & Aesthetics · Delhi, India
+                        </p>
                       </div>
-                      <p style={{ fontSize: "14px", color: "var(--mu)", fontFamily: "var(--font-mono)", marginTop: "2px" }}>
-                        @aanya.styles · Fashion & Aesthetics · Delhi, India
-                      </p>
                     </div>
+
+                    <button
+                      onClick={() => setMediaKitModalCreator(creators[0])}
+                      style={{
+                        padding: "8px 16px",
+                        borderRadius: "12px",
+                        backgroundColor: "var(--alt)",
+                        border: "1px solid var(--ln)",
+                        color: "var(--ink)",
+                        fontSize: "13px",
+                        fontWeight: 600,
+                        cursor: "pointer",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                    >
+                      <FileText size={15} color="var(--or)" />
+                      <span>View My Media Kit</span>
+                    </button>
                   </div>
 
                   {/* Metrics */}
@@ -1804,6 +1947,38 @@ export default function Home() {
             </button>
           </form>
         </Modal>
+      )}
+
+      {/* Escrow Milestone Tracker Modal */}
+      {escrowModalDeal && (
+        <EscrowTracker
+          deal={escrowModalDeal}
+          onClose={() => setEscrowModalDeal(null)}
+          onToast={showToast}
+        />
+      )}
+
+      {/* Real-Time Deal Messenger Modal */}
+      {chatModalDeal && (
+        <DealChatModal
+          deal={chatModalDeal}
+          partnerName={chatModalDeal.partnerName || "Deal Partner"}
+          onClose={() => setChatModalDeal(null)}
+          onToast={showToast}
+        />
+      )}
+
+      {/* Creator Media Kit & Rate Card Generator Modal */}
+      {mediaKitModalCreator && (
+        <MediaKitModal
+          creator={mediaKitModalCreator}
+          onClose={() => setMediaKitModalCreator(null)}
+          onInvite={(c) => {
+            setMediaKitModalCreator(null);
+            setInviteModalCreator(c);
+          }}
+          onToast={showToast}
+        />
       )}
     </div>
   );
