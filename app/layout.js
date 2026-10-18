@@ -1,14 +1,14 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Roster: Creator Deals, Powered by Creators",
+  title: "SponsorSync: Creator Deals, Powered by Creators",
   description:
     "Direct, transparent creator marketplace connecting forward-thinking brands with high-engagement Indian creators. Inspired by modern SaaS workflows.",
   keywords: [
     "creator marketplace",
     "influencer marketing",
     "brand campaigns",
-    "roster",
+    "sponsorsync",
     "worksbuddy ai",
     "youtube creators",
     "instagram creators",
