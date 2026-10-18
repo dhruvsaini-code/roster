@@ -30,7 +30,7 @@ export default function DealChatModal({ deal, partnerName = "Brand Marketing Lea
     {
       id: "msg-3",
       type: "system",
-      text: "🔒 Milestone Escrow Funded: ₹35,000 locked safely in Roster Escrow",
+      text: "🔒 Milestone Escrow Funded: ₹35,000 locked safely in SponsorSync Escrow",
       time: "Yesterday, 5:30 PM",
     },
     {

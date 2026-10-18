@@ -6,45 +6,45 @@ export default function ComparisonTable() {
   const comparisonData = [
     {
       feature: "Creator Discovery & Match",
-      roster: "AI-powered niche graphing & verified demographic match",
+      sponsorsync: "AI-powered niche graphing & verified demographic match",
       agency: "Limited agency-represented roster with biased push",
       manual: "Chaotic manual search & endless unanswered DMs",
-      rosterWin: true,
+      sponsorsyncWin: true,
     },
     {
       feature: "Payment Protection",
-      roster: "Automated Milestone Escrow (Funds released upon proof)",
+      sponsorsync: "Automated Milestone Escrow (Funds released upon proof)",
       agency: "Hefty 50% upfront fee with hidden clause retainers",
       manual: "Risky direct wire transfers with zero ghosting protection",
-      rosterWin: true,
+      sponsorsyncWin: true,
     },
     {
       feature: "Deliverable & Script Approvals",
-      roster: "Structured inline preview studio with timecoded revisions",
+      sponsorsync: "Structured inline preview studio with timecoded revisions",
       agency: "Slow multi-day email/phone relay between account managers",
       manual: "Disorganized WhatsApp/Telegram voice notes and lost files",
-      rosterWin: true,
+      sponsorsyncWin: true,
     },
     {
       feature: "Turnaround Time to Live",
-      roster: "24 to 48 Hours from brief to signed deal",
+      sponsorsync: "24 to 48 Hours from brief to signed deal",
       agency: "3 to 5 Weeks of bureaucratic SOW negotiations",
       manual: "2 to 4 Weeks of erratic ping-pong messaging",
-      rosterWin: true,
+      sponsorsyncWin: true,
     },
     {
       feature: "Performance & Conversion Tracking",
-      roster: "Real-time UTM, click attribution & verified view telemetry",
+      sponsorsync: "Real-time UTM, click attribution & verified view telemetry",
       agency: "Lagging monthly PDFs with vanity metrics",
       manual: "Requesting cropped Instagram story screenshots",
-      rosterWin: true,
+      sponsorsyncWin: true,
     },
     {
       feature: "Pricing Transparency & Fees",
-      roster: "Ultra-lean 5% platform fee with transparent creator rates",
+      sponsorsync: "Ultra-lean 5% platform fee with transparent creator rates",
       agency: "35% – 50% hidden agency margin markups",
       manual: "Arbitrary creator pricing with zero standardized benchmarks",
-      rosterWin: true,
+      sponsorsyncWin: true,
     },
   ];
 
@@ -69,7 +69,7 @@ export default function ComparisonTable() {
             ⚖️ The Modern Advantage
           </span>
           <h2 style={{ fontSize: "clamp(32px, 4.5vw, 52px)", marginBottom: "16px", letterSpacing: "-0.03em" }}>
-            Why leading brands switch to <span className="serif" style={{ fontStyle: "italic", color: "var(--or)" }}>Roster</span>
+            Why leading brands switch to <span className="serif" style={{ fontStyle: "italic", color: "var(--or)" }}>SponsorSync</span>
           </h2>
           <p style={{ color: "var(--mu)", fontSize: "17px", lineHeight: 1.6 }}>
             Eliminate middleman friction, erratic pricing, and payment uncertainty. Experience the creator deal infrastructure built for velocity.
@@ -122,7 +122,7 @@ export default function ComparisonTable() {
                           boxShadow: "0 0 8px var(--or)",
                         }}
                       />
-                      <span>Roster Workspace</span>
+                      <span>SponsorSync Workspace</span>
                       <span
                         style={{
                           fontSize: "10px",
@@ -161,7 +161,7 @@ export default function ComparisonTable() {
                       {row.feature}
                     </td>
 
-                    {/* Roster Column (Highlighted) */}
+                    {/* SponsorSync Column (Highlighted) */}
                     <td
                       style={{
                         padding: "20px 24px",
@@ -190,7 +190,7 @@ export default function ComparisonTable() {
                         >
                           <Check size={13} strokeWidth={3} />
                         </div>
-                        <span style={{ lineHeight: 1.5 }}>{row.roster}</span>
+                        <span style={{ lineHeight: 1.5 }}>{row.sponsorsync || row.roster}</span>
                       </div>
                     </td>
 

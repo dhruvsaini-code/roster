@@ -53,7 +53,7 @@ export default function Home() {
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    const saved = localStorage.getItem("roster_theme") || "light";
+    const saved = localStorage.getItem("sponsorsync_theme") || localStorage.getItem("roster_theme") || "light";
     setTheme(saved);
     document.documentElement.setAttribute("data-theme", saved);
   }, []);
@@ -61,7 +61,7 @@ export default function Home() {
   const toggleTheme = () => {
     const next = theme === "light" ? "dark" : "light";
     setTheme(next);
-    localStorage.setItem("roster_theme", next);
+    localStorage.setItem("sponsorsync_theme", next);
     document.documentElement.setAttribute("data-theme", next);
   };
 
@@ -1527,7 +1527,7 @@ export default function Home() {
             <div>
               <a className="wb-logo" href="#">
                 <i></i>
-                <span>Roster</span>
+                <span>SponsorSync</span>
               </a>
               <p style={{ color: "var(--mu)", fontSize: "14px", maxWidth: "22em", marginTop: "12px", lineHeight: 1.5 }}>
                 Direct creator marketplace and deal operating system for forward-thinking brands and creators.
@@ -1562,15 +1562,15 @@ export default function Home() {
 
             <div>
               <h4>Comparison</h4>
-              <a href="#next">Roster vs Sheets</a>
-              <a href="#next">Roster vs Instagram DMs</a>
-              <a href="#next">Roster vs WhatsApp</a>
-              <a href="#next">Roster vs Agencies</a>
+              <a href="#next">SponsorSync vs Sheets</a>
+              <a href="#next">SponsorSync vs Instagram DMs</a>
+              <a href="#next">SponsorSync vs WhatsApp</a>
+              <a href="#next">SponsorSync vs Agencies</a>
             </div>
           </div>
 
           <div className="wb-cp">
-            <span>© 2026 Roster. Inspired by WorksBuddy. Built by Dhruv Saini.</span>
+            <span>© 2026 SponsorSync. Inspired by WorksBuddy. Built by Dhruv Saini.</span>
             <span>Privacy Policy · Terms of Service · Security</span>
           </div>
         </div>

@@ -486,7 +486,7 @@ export default function MediaKitModal({ creator, onClose, onInvite, onToast }) {
           }}
         >
           <span style={{ fontSize: "12px", color: "var(--mu)" }}>
-            ⚡ All bookings protected by Roster Automated Escrow
+            ⚡ All bookings protected by SponsorSync Automated Escrow
           </span>
 
           <button
