@@ -9,7 +9,7 @@ export default function Navbar({ theme, onToggleTheme, onSelectRole, onSelectNic
       <div className="wb-nav">
         <a className="wb-logo" href="#">
           <i></i>
-          <span>Roster</span>
+          <span>SponsorSync</span>
         </a>
 
         <nav className="wb-menu" aria-label="Main Navigation">
@@ -74,7 +74,7 @@ export default function Navbar({ theme, onToggleTheme, onSelectRole, onSelectNic
           </div>
 
           <div className="wb-mi">
-            <a href="#comparison">Why Roster</a>
+            <a href="#comparison">Why SponsorSync</a>
           </div>
 
           <div className="wb-mi">

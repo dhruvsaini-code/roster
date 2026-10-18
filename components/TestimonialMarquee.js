@@ -30,7 +30,7 @@ export default function TestimonialMarquee() {
     <section style={{ padding: "60px 0" }}>
       <div className="w" style={{ marginBottom: "32px" }}>
         <div className="wb-h">
-          <h2>See why teams love Roster</h2>
+          <h2>See why teams love SponsorSync</h2>
           <p>Direct feedback from growth leads, brand founders, and full-time creators.</p>
         </div>
       </div>

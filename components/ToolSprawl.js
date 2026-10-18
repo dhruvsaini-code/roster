@@ -12,7 +12,7 @@ export default function ToolSprawl() {
           <span>🧾 UPI Screenshots</span>
         </div>
         <p>
-          Brand deals live scattered across DMs, spreadsheets, and lost inboxes. Teams lose hours chasing replies, verifying screenshots, and haggling rates. Roster keeps every brief, pitch, and hire in one coherent place.
+          Brand deals live scattered across DMs, spreadsheets, and lost inboxes. Teams lose hours chasing replies, verifying screenshots, and haggling rates. SponsorSync keeps every brief, pitch, and hire in one coherent place.
         </p>
         <p className="big">What if deal-making was seamless?</p>
       </div>

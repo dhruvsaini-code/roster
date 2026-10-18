@@ -35,7 +35,7 @@ export default function HeroSection() {
         {/* Announcement Banner Pill */}
         <a href="#app-workspace" className="announcement-pill">
           <span className="announcement-badge">New</span>
-          <span>Roster 2.0: Automated Pitch Pipelines & YouTube API Sync</span>
+          <span>SponsorSync 2.0: Automated Pitch Pipelines & YouTube API Sync</span>
           <ArrowRight size={13} color="var(--or)" />
         </a>
 
@@ -95,7 +95,7 @@ export default function HeroSection() {
             <div className="wb-sd">
               <div className="wb-logo" style={{ fontSize: "18px", paddingBottom: "16px" }}>
                 <i></i>
-                <span>Roster</span>
+                <span>SponsorSync</span>
               </div>
 
               <div className="wb-ws">
