@@ -113,7 +113,7 @@ const BRANDS_DATA = [
 ];
 
 async function main() {
-  console.log("Seeding Roster database...");
+  console.log("Seeding SponsorSync database...");
 
   // Seed Creators
   for (const c of CREATORS_DATA) {

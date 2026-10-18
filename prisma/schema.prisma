@@ -1,4 +1,4 @@
-// Roster — core data model
+// SponsorSync — core data model
 // Run `npx prisma migrate dev` once DATABASE_URL is set in .env to create these tables.
 
 generator client {

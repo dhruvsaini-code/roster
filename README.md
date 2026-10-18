@@ -1,4 +1,4 @@
-# Roster ⚡
+# SponsorSync ⚡
 
 > **Curated Creator Marketplace & Deal Operating System for Forward-Thinking Brands and Indian Creators.**
 
@@ -13,7 +13,7 @@ Direct, transparent deal-making platform connecting modern consumer brands with 
 - **💬 Direct Deal Negotiation Messenger:** Threaded brand-creator messenger with quick response chips, draft preview attachments, simulated counterpart replies, and instant contract state sync.
 - **📑 Dynamic Creator Media Kit Generator:** Instant commercial media kit builder with demographic age distributions, gender ratios, top metropolitan cities, and 3-tier commercial rate card packages.
 - **📊 Interactive Campaign ROI Estimator:** Real-time budget simulation slider allowing brands to model projected impressions, estimated viewer engagements, and recommended creator tier mix across budgets from ₹20,000 to ₹5,00,000.
-- **⚖️ Side-by-Side Comparison Matrix:** Comprehensive capability breakdown contrasting Roster against traditional talent agencies and manual Instagram DMs/spreadsheets across discovery, escrow security, turnarounds, and pricing transparency.
+- **⚖️ Side-by-Side Comparison Matrix:** Comprehensive capability breakdown contrasting SponsorSync against traditional talent agencies and manual Instagram DMs/spreadsheets across discovery, escrow security, turnarounds, and pricing transparency.
 - **🎟️ Signature Ticket-Stub Deal Cards:** Visual ticket cards featuring perforated dashed separators, notch cutouts, budget brackets (in INR `₹`), deliverables scope, barcode accents, and real-time days-left counters.
 - **🔄 Dual Persona Architecture:**
   - **🏢 Brand Portal:** Discover creators filtered by niche (Fashion, Tech, Beauty, Fitness, etc.), verified follower tiers, and engagement rates. Create campaign briefs and review candidate applicant rosters with 1-click **Shortlist**, **Hire**, or **Decline** workflows.
