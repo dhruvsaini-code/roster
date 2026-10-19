@@ -145,20 +145,24 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 📡 API Reference
 
+### Health (`/api/health`)
+- **`GET /api/health`**: Service liveness and uptime health check.
+
 ### Offers (`/api/offers`)
 - **`GET /api/offers?niche=Tech&search=earbuds`**: Retrieve open campaigns. Supports query filtering by niche and keyword.
-- **`POST /api/offers`**: Publish a new campaign brief.
+- **`GET /api/offers/[id]`**: Retrieve single campaign brief by ID with attached applications.
+- **`POST /api/offers`**: Publish a new campaign brief with budget constraint validation (`budgetMin <= budgetMax`).
   - **Body:** `{ title, niche, deliverables, budgetMin, budgetMax, deadline, brandProfileId }`
 
 ### Applications (`/api/applications`)
 - **`GET /api/applications?offerId=off-1`**: Retrieve applications for a specific offer or creator.
-- **`POST /api/applications`**: Submit a new application or brand invite.
+- **`POST /api/applications`**: Submit a new application or brand invite with sanitized inputs.
   - **Body:** `{ offerId, creatorProfileId, pitch, proposedRate, status }`
-- **`PATCH /api/applications`**: Update status of an applicant.
+- **`PATCH /api/applications`**: Update status of an applicant with strict enum validation.
   - **Body:** `{ id: "app-id", status: "SHORTLISTED" | "HIRED" | "REJECTED" }`
 
 ### Creators (`/api/creators`)
-- **`GET /api/creators?niche=Fashion&platform=Instagram&search=Delhi`**: Filter verified creators by niche, platform, location, or handle.
+- **`GET /api/creators?niche=Fashion&platform=Instagram&search=Delhi&limit=20&page=1&sortBy=rate_asc`**: Filter verified creators by niche, platform, location, or handle with pagination headers (`X-Total-Count`, `X-Page`, `X-Limit`).
 
 ### YouTube Stats Sync (`/api/connect/youtube`)
 - **`POST /api/connect/youtube`**: Queries the YouTube Data API v3 using the authenticated creator's OAuth access token. Pulls subscriber counts, recent video views, likes, and comments to calculate real-world engagement metrics.
