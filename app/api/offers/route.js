@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { INITIAL_OFFERS } from "@/lib/seedData";
+import { validateRequired, parsePositiveInt, sanitizeText } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
@@ -59,19 +60,37 @@ export async function POST(req) {
   try {
     const body = await req.json();
 
-    if (!body.title || !body.deliverables || !body.budgetMin || !body.budgetMax) {
-      return Response.json({ error: "Missing required campaign fields" }, { status: 400 });
+    const check = validateRequired(body, ["title", "deliverables", "budgetMin", "budgetMax"]);
+    if (!check.valid) {
+      return Response.json(
+        { error: `Missing required campaign fields: ${check.missing.join(", ")}` },
+        { status: 400 }
+      );
     }
+
+    const budgetMin = parsePositiveInt(body.budgetMin);
+    const budgetMax = parsePositiveInt(body.budgetMax);
+
+    if (!budgetMin || !budgetMax || budgetMin > budgetMax) {
+      return Response.json(
+        { error: "Invalid budget range: minimum budget cannot exceed maximum budget" },
+        { status: 400 }
+      );
+    }
+
+    const title = sanitizeText(body.title);
+    const deliverables = sanitizeText(body.deliverables);
+    const niche = sanitizeText(body.niche) || "General";
 
     try {
       const offer = await prisma.offer.create({
         data: {
           brandProfileId: body.brandProfileId || "default-brand-id",
-          title: body.title,
-          niche: body.niche || "General",
-          deliverables: body.deliverables,
-          budgetMin: Number(body.budgetMin),
-          budgetMax: Number(body.budgetMax),
+          title,
+          niche,
+          deliverables,
+          budgetMin,
+          budgetMax,
           deadline: body.deadline ? new Date(body.deadline) : new Date(Date.now() + 14 * 86400000),
         },
       });
