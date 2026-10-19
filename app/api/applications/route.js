@@ -40,6 +40,8 @@ export async function GET(req) {
   }
 }
 
+const ALLOWED_STATUSES = ["APPLIED", "INVITED", "SHORTLISTED", "HIRED", "REJECTED"];
+
 // Creator applies to an offer or Brand invites a creator
 export async function POST(req) {
   try {
@@ -49,14 +51,19 @@ export async function POST(req) {
       return Response.json({ error: "Offer ID is required" }, { status: 400 });
     }
 
+    const rawStatus = (body.status || "APPLIED").toUpperCase();
+    const status = ALLOWED_STATUSES.includes(rawStatus) ? rawStatus : "APPLIED";
+    const pitch = typeof body.pitch === "string" ? body.pitch.trim() : "";
+    const proposedRate = body.proposedRate ? Math.max(0, Number(body.proposedRate)) : null;
+
     try {
       const application = await prisma.application.create({
         data: {
           offerId: body.offerId,
           creatorProfileId: body.creatorProfileId || "default-creator-id",
-          pitch: body.pitch || "",
-          proposedRate: body.proposedRate ? Number(body.proposedRate) : null,
-          status: body.status || "APPLIED",
+          pitch,
+          proposedRate,
+          status,
         },
       });
       return Response.json(application, { status: 201 });
@@ -65,9 +72,9 @@ export async function POST(req) {
         id: `app-${Date.now()}`,
         offerId: body.offerId,
         influencerId: body.creatorProfileId || body.influencerId || "inf-1",
-        status: body.status || "Applied",
-        pitch: body.pitch || "",
-        rate: body.proposedRate ? Number(body.proposedRate) : 0,
+        status: status === "APPLIED" ? "Applied" : status === "INVITED" ? "Invited" : status,
+        pitch,
+        rate: proposedRate || 0,
         createdAt: new Date().toISOString(),
       };
       return Response.json(simulatedApp, { status: 201 });
@@ -86,16 +93,24 @@ export async function PATCH(req) {
       return Response.json({ error: "Application ID and new status are required" }, { status: 400 });
     }
 
+    const nextStatus = String(body.status).toUpperCase();
+    if (!ALLOWED_STATUSES.includes(nextStatus)) {
+      return Response.json(
+        { error: `Invalid status. Allowed values: ${ALLOWED_STATUSES.join(", ")}` },
+        { status: 400 }
+      );
+    }
+
     try {
       const application = await prisma.application.update({
         where: { id: body.id },
-        data: { status: body.status },
+        data: { status: nextStatus },
       });
       return Response.json(application);
     } catch (dbErr) {
       return Response.json({
         id: body.id,
-        status: body.status,
+        status: nextStatus,
         updatedAt: new Date().toISOString(),
       });
     }
