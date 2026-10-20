@@ -12,6 +12,8 @@ import {
   FileText,
   DollarSign,
   X,
+  Copy,
+  Check,
 } from "lucide-react";
 import { formatMoney } from "./DealCard";
 
@@ -19,6 +21,16 @@ export default function EscrowTracker({ deal, onClose, onToast }) {
   // Current milestone stage: 1 to 4
   const [currentStage, setCurrentStage] = useState(2);
   const [isAdvancing, setIsAdvancing] = useState(false);
+  const [copiedId, setCopiedId] = useState(false);
+
+  const contractId = "ESC-2026-9812";
+
+  const handleCopyContractId = () => {
+    navigator.clipboard?.writeText(contractId);
+    setCopiedId(true);
+    onToast?.("Contract ID copied to clipboard! 📋");
+    setTimeout(() => setCopiedId(false), 2000);
+  };
 
   const budget = deal?.budgetMax || deal?.rate || 45000;
   const platformFee = Math.round(budget * 0.05);
@@ -135,9 +147,32 @@ export default function EscrowTracker({ deal, onClose, onToast }) {
               <h3 style={{ fontSize: "17px", fontWeight: 700, color: "var(--ink)", margin: 0 }}>
                 Milestone Escrow Contract
               </h3>
-              <p style={{ fontSize: "12px", color: "var(--mu)", margin: 0, fontFamily: "var(--font-mono)" }}>
-                ID: ESC-2026-9812 • {deal?.title || "Instagram Reels Campaign"}
-              </p>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "2px" }}>
+                <span style={{ fontSize: "12px", color: "var(--mu)", fontFamily: "var(--font-mono)" }}>
+                  ID: {contractId}
+                </span>
+                <button
+                  onClick={handleCopyContractId}
+                  title="Copy contract ID"
+                  style={{
+                    background: "var(--alt)",
+                    border: "1px solid var(--ln)",
+                    borderRadius: "6px",
+                    padding: "2px 6px",
+                    fontSize: "11px",
+                    cursor: "pointer",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    color: copiedId ? "var(--ok)" : "var(--mu)",
+                    transition: "all 0.15s ease",
+                  }}
+                >
+                  {copiedId ? <Check size={11} strokeWidth={2.5} /> : <Copy size={11} />}
+                  <span>{copiedId ? "Copied" : "Copy"}</span>
+                </button>
+                <span style={{ fontSize: "12px", color: "var(--mu)" }}>• {deal?.title || "Instagram Reels Campaign"}</span>
+              </div>
             </div>
           </div>
 
@@ -290,12 +325,14 @@ export default function EscrowTracker({ deal, onClose, onToast }) {
                       border: `2px solid ${
                         isPast ? "var(--ok)" : isCurrent ? "var(--or)" : "var(--ln)"
                       }`,
+                      boxShadow: isCurrent ? "0 0 0 4px var(--orb)" : "none",
                       display: "grid",
                       placeItems: "center",
                       flexShrink: 0,
                       fontWeight: 700,
                       fontSize: "13px",
                       fontFamily: "var(--font-mono)",
+                      transition: "all 0.3s ease",
                     }}
                   >
                     {isPast ? <CheckCircle2 size={16} strokeWidth={2.5} /> : m.step}
