@@ -37,14 +37,14 @@ export default function StatusBadge({ status }) {
   const normalized =
     status?.charAt(0).toUpperCase() + status?.slice(1).toLowerCase() || "Applied";
   const cfg = STATUS_CONFIG[normalized] || STATUS_CONFIG.Applied;
-  const Icon = cfg.icon;
+  const isLive = ["Applied", "Shortlisted", "Invited"].includes(normalized);
 
   return (
     <span
       style={{
         display: "inline-flex",
         alignItems: "center",
-        gap: "5px",
+        gap: "6px",
         padding: "4px 11px",
         borderRadius: "9999px",
         fontSize: "12px",
@@ -53,10 +53,24 @@ export default function StatusBadge({ status }) {
         color: cfg.fg,
         border: `1px solid ${cfg.border}`,
         whiteSpace: "nowrap",
+        userSelect: "none",
+        transition: "all 0.15s ease",
       }}
     >
       <Icon size={13} strokeWidth={2.4} />
-      {normalized}
+      <span>{normalized}</span>
+      {isLive && (
+        <span
+          style={{
+            width: "5px",
+            height: "5px",
+            borderRadius: "50%",
+            backgroundColor: cfg.fg,
+            display: "inline-block",
+            marginLeft: "1px",
+          }}
+        />
+      )}
     </span>
   );
 }
