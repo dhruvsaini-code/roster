@@ -309,37 +309,65 @@ export default function DealChatModal({ deal, partnerName = "Brand Marketing Lea
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Quick Suggestion Chips */}
+        {/* Quick Suggestion Chips & Reactions */}
         <div
           style={{
             padding: "8px 16px",
             borderTop: "1px solid var(--ln)",
             backgroundColor: "var(--alt)",
             display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
             gap: "8px",
             overflowX: "auto",
-            whiteSpace: "nowrap",
           }}
         >
-          {quickChips.map((chip, idx) => (
-            <button
-              key={idx}
-              onClick={() => handleSend(chip)}
-              style={{
-                fontSize: "12px",
-                fontWeight: 500,
-                padding: "5px 12px",
-                borderRadius: "99px",
-                backgroundColor: "var(--card)",
-                border: "1px solid var(--ln)",
-                color: "var(--ink)",
-                cursor: "pointer",
-                flexShrink: 0,
-              }}
-            >
-              {chip}
-            </button>
-          ))}
+          <div style={{ display: "flex", gap: "8px", overflowX: "auto", whiteSpace: "nowrap" }}>
+            {quickChips.map((chip, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleSend(chip)}
+                style={{
+                  fontSize: "12px",
+                  fontWeight: 500,
+                  padding: "5px 12px",
+                  borderRadius: "99px",
+                  backgroundColor: "var(--card)",
+                  border: "1px solid var(--ln)",
+                  color: "var(--ink)",
+                  cursor: "pointer",
+                  flexShrink: 0,
+                }}
+              >
+                {chip}
+              </button>
+            ))}
+          </div>
+
+          {/* Quick Reaction Emojis */}
+          <div style={{ display: "flex", gap: "4px", flexShrink: 0, borderLeft: "1px solid var(--ln)", paddingLeft: "8px" }}>
+            {["👍", "🔥", "🚀", "❤️"].map((emoji) => (
+              <button
+                key={emoji}
+                type="button"
+                onClick={() => handleSend(emoji)}
+                title={`Send ${emoji}`}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "15px",
+                  padding: "2px 4px",
+                  borderRadius: "6px",
+                  transition: "transform 0.1s ease",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.2)")}
+                onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+              >
+                {emoji}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Message Input Box */}
@@ -349,64 +377,79 @@ export default function DealChatModal({ deal, partnerName = "Brand Marketing Lea
             handleSend();
           }}
           style={{
-            padding: "14px 20px",
+            padding: "14px 20px 8px",
             borderTop: "1px solid var(--ln)",
             backgroundColor: "var(--card)",
             display: "flex",
-            alignItems: "center",
-            gap: "10px",
+            flexDirection: "column",
+            gap: "6px",
           }}
         >
-          <button
-            type="button"
-            onClick={() => onToast?.("Select draft video or script PDF to attach 📎")}
-            style={{
-              background: "none",
-              border: "none",
-              color: "var(--mu)",
-              cursor: "pointer",
-              padding: "6px",
-            }}
-            title="Attach file"
-          >
-            <Paperclip size={18} />
-          </button>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <button
+              type="button"
+              onClick={() => onToast?.("Select draft video or script PDF to attach 📎")}
+              style={{
+                background: "none",
+                border: "none",
+                color: "var(--mu)",
+                cursor: "pointer",
+                padding: "6px",
+              }}
+              title="Attach file"
+            >
+              <Paperclip size={18} />
+            </button>
 
-          <input
-            type="text"
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            placeholder="Type your message, script revision, or draft link..."
-            style={{
-              flex: 1,
-              padding: "10px 14px",
-              borderRadius: "12px",
-              border: "1px solid var(--ln)",
-              backgroundColor: "var(--alt)",
-              color: "var(--ink)",
-              fontSize: "14px",
-              outline: "none",
-            }}
-          />
+            <input
+              type="text"
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              placeholder="Type your message, script revision, or draft link..."
+              style={{
+                flex: 1,
+                padding: "10px 14px",
+                borderRadius: "12px",
+                border: "1px solid var(--ln)",
+                backgroundColor: "var(--alt)",
+                color: "var(--ink)",
+                fontSize: "14px",
+                outline: "none",
+              }}
+            />
 
-          <button
-            type="submit"
-            disabled={!inputMessage.trim()}
-            className="b or"
+            <button
+              type="submit"
+              disabled={!inputMessage.trim()}
+              className="b or"
+              style={{
+                padding: "10px 16px",
+                borderRadius: "12px",
+                fontSize: "13px",
+                fontWeight: 600,
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                opacity: !inputMessage.trim() ? 0.5 : 1,
+              }}
+            >
+              <span>Send</span>
+              <Send size={14} />
+            </button>
+          </div>
+
+          <div
             style={{
-              padding: "10px 16px",
-              borderRadius: "12px",
-              fontSize: "13px",
-              fontWeight: 600,
               display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              opacity: !inputMessage.trim() ? 0.5 : 1,
+              justifyContent: "space-between",
+              fontSize: "11px",
+              color: "var(--mu)",
+              padding: "0 4px",
             }}
           >
-            <span>Send</span>
-            <Send size={14} />
-          </button>
+            <span>🔒 Messages sync directly with active deal escrow</span>
+            <span>Press ↵ Enter to send</span>
+          </div>
         </form>
       </div>
     </div>
