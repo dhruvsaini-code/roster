@@ -4,6 +4,13 @@ import { useState, useMemo } from "react";
 import { Calculator, ArrowRight, Zap, TrendingUp, Users, CheckCircle2 } from "lucide-react";
 import { formatMoney } from "./DealCard";
 
+const BUDGET_PRESETS = [
+  { label: "Starter", value: 35000 },
+  { label: "Growth", value: 75000 },
+  { label: "Scale", value: 150000 },
+  { label: "Enterprise", value: 350000 },
+];
+
 export default function RoiCalculator() {
   const [budget, setBudget] = useState(75000);
 
@@ -104,6 +111,33 @@ export default function RoiCalculator() {
               >
                 0% Agency Markup
               </span>
+            </div>
+
+            {/* Quick Preset Pills */}
+            <div style={{ display: "flex", gap: "8px", marginBottom: "18px", flexWrap: "wrap" }}>
+              {BUDGET_PRESETS.map((p) => {
+                const isActive = budget === p.value;
+                return (
+                  <button
+                    key={p.label}
+                    onClick={() => setBudget(p.value)}
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      padding: "6px 14px",
+                      borderRadius: "99px",
+                      border: isActive ? "1px solid var(--or)" : "1px solid var(--ln)",
+                      backgroundColor: isActive ? "var(--or)" : "var(--alt)",
+                      color: isActive ? "#fff" : "var(--mu)",
+                      cursor: "pointer",
+                      transition: "all 0.15s ease",
+                      boxShadow: isActive ? "0 2px 8px rgba(255, 92, 0, 0.25)" : "none",
+                    }}
+                  >
+                    {p.label} ({formatMoney(p.value)})
+                  </button>
+                );
+              })}
             </div>
 
             <input
