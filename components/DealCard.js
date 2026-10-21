@@ -169,6 +169,22 @@ export default function DealCard({
           >
             – {formatMoney(offer.budgetMax)}
           </div>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "3px",
+              fontSize: "10px",
+              color: "var(--ok)",
+              backgroundColor: "var(--ok-bg)",
+              padding: "2px 7px",
+              borderRadius: "4px",
+              marginTop: "6px",
+              fontWeight: 600,
+            }}
+          >
+            🔒 Escrow Protected
+          </span>
         </div>
 
         {rightContent ? (
