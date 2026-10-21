@@ -378,57 +378,80 @@ export default function EscrowTracker({ deal, onClose, onToast }) {
         {/* Modal Footer Controls */}
         <div
           style={{
-            padding: "18px 28px",
+            padding: "16px 28px",
             borderTop: "1px solid var(--ln)",
             backgroundColor: "var(--alt)",
             display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: "12px",
+            flexDirection: "column",
+            gap: "10px",
           }}
         >
-          <button
-            onClick={handleDownloadSow}
+          <div
             style={{
-              background: "none",
-              border: "1px solid var(--ln)",
-              color: "var(--ink)",
-              fontSize: "12px",
-              fontWeight: 600,
-              padding: "8px 14px",
-              borderRadius: "10px",
-              display: "inline-flex",
+              display: "flex",
               alignItems: "center",
-              gap: "6px",
-              cursor: "pointer",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: "12px",
             }}
           >
-            <Download size={14} />
-            <span>Download SOW Agreement</span>
-          </button>
+            <button
+              onClick={handleDownloadSow}
+              style={{
+                background: "var(--card)",
+                border: "1px solid var(--ln)",
+                color: "var(--ink)",
+                fontSize: "12px",
+                fontWeight: 600,
+                padding: "8px 14px",
+                borderRadius: "10px",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                cursor: "pointer",
+                transition: "all 0.15s ease",
+              }}
+            >
+              <Download size={14} />
+              <span>Download SOW Agreement</span>
+            </button>
 
-          <button
-            onClick={handleAdvance}
-            disabled={isAdvancing || currentStage >= 4}
-            className="b or"
+            <button
+              onClick={handleAdvance}
+              disabled={isAdvancing || currentStage >= 4}
+              className="b or"
+              style={{
+                fontSize: "13px",
+                fontWeight: 600,
+                padding: "9px 20px",
+                borderRadius: "10px",
+                opacity: isAdvancing || currentStage >= 4 ? 0.6 : 1,
+                cursor: isAdvancing || currentStage >= 4 ? "default" : "pointer",
+              }}
+            >
+              {isAdvancing ? (
+                <span>Updating Ledger...</span>
+              ) : currentStage >= 4 ? (
+                <span>Contract Settled</span>
+              ) : (
+                <span>Simulate Next Stage ({currentStage + 1}/4)</span>
+              )}
+            </button>
+          </div>
+
+          <div
             style={{
-              fontSize: "13px",
-              fontWeight: 600,
-              padding: "9px 20px",
-              borderRadius: "10px",
-              opacity: isAdvancing || currentStage >= 4 ? 0.6 : 1,
-              cursor: isAdvancing || currentStage >= 4 ? "default" : "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "6px",
+              fontSize: "11px",
+              color: "var(--mu)",
             }}
           >
-            {isAdvancing ? (
-              <span>Updating Ledger...</span>
-            ) : currentStage >= 4 ? (
-              <span>Contract Settled</span>
-            ) : (
-              <span>Simulate Next Stage ({currentStage + 1}/4)</span>
-            )}
-          </button>
+            <Lock size={11} color="var(--or)" />
+            <span>Funds are securely escrowed in multi-sig vault • 100% dispute resolution guarantee</span>
+          </div>
         </div>
       </div>
     </div>
