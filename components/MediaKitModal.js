@@ -77,7 +77,7 @@ export default function MediaKitModal({ creator, onClose, onInvite, onToast }) {
             justifyContent: "space-between",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <span
               style={{
                 fontSize: "12px",
@@ -92,21 +92,57 @@ export default function MediaKitModal({ creator, onClose, onInvite, onToast }) {
             >
               Verified Creator Media Kit
             </span>
+            <span
+              style={{
+                fontSize: "11px",
+                fontWeight: 600,
+                color: "var(--ok)",
+                backgroundColor: "var(--ok-bg)",
+                padding: "3px 8px",
+                borderRadius: "6px",
+              }}
+            >
+              ⚡ ~2h response time
+            </span>
           </div>
 
-          <button
-            onClick={onClose}
-            style={{
-              background: "none",
-              border: "none",
-              color: "var(--mu)",
-              cursor: "pointer",
-              padding: "6px",
-              borderRadius: "8px",
-            }}
-          >
-            <X size={20} />
-          </button>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <button
+              onClick={handleCopyLink}
+              title="Copy public link"
+              style={{
+                background: "var(--card)",
+                border: "1px solid var(--ln)",
+                borderRadius: "8px",
+                padding: "6px 12px",
+                fontSize: "12px",
+                fontWeight: 600,
+                cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "5px",
+                color: copied ? "var(--ok)" : "var(--ink)",
+                transition: "all 0.15s ease",
+              }}
+            >
+              {copied ? <Check size={13} strokeWidth={2.5} /> : <Share2 size={13} />}
+              <span>{copied ? "Link Copied" : "Share"}</span>
+            </button>
+
+            <button
+              onClick={onClose}
+              style={{
+                background: "none",
+                border: "none",
+                color: "var(--mu)",
+                cursor: "pointer",
+                padding: "6px",
+                borderRadius: "8px",
+              }}
+            >
+              <X size={20} />
+            </button>
+          </div>
         </div>
 
         {/* Scrollable Content */}
