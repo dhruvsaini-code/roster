@@ -1,4 +1,4 @@
-import { MapPin, CheckCircle, Send, Users, ShieldCheck, FileText } from "lucide-react";
+import { MapPin, CheckCircle, Send, Users, ShieldCheck, FileText, TrendingUp, Zap } from "lucide-react";
 import { Instagram, Youtube } from "./Icons";
 import Avatar from "./Avatar";
 import { formatMoney } from "./DealCard";
@@ -148,6 +148,21 @@ export default function CreatorCard({ creator, onInvite, onViewMediaKit }) {
             <Users size={11} color="var(--ok)" />
             84% India Audience
           </span>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "3px",
+              backgroundColor: "var(--ok-bg)",
+              color: "var(--ok)",
+              padding: "2px 7px",
+              borderRadius: "6px",
+              fontWeight: 600,
+            }}
+          >
+            <ShieldCheck size={11} />
+            Verified Sync
+          </span>
         </div>
 
         {/* Key Metrics Grid */}
@@ -187,9 +202,13 @@ export default function CreatorCard({ creator, onInvite, onViewMediaKit }) {
                 fontWeight: 700,
                 fontFamily: "var(--font-mono)",
                 color: "var(--ok)",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "3px",
               }}
             >
-              {creator.engagement}%
+              <span>{creator.engagement}%</span>
+              <TrendingUp size={12} strokeWidth={2.5} />
             </div>
           </div>
           <div>
